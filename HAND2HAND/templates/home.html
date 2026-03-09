@@ -1,0 +1,126 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block title %}Home - Donature{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'donations/css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= Hero Section ================= -->
+<section class="hero-section">
+  <div class="hero-text">
+    {% if not request.user.is_authenticated %}
+      <h1>Donate goods, support charity <br> and help people in need</h1>
+      <p>Join Donature today and make an impact by donating essentials or supporting NGOs.</p>
+      <div class="hero-buttons">
+        <a href="#" onclick="openModal('loginModal')" class="btn-primary">Donate Now</a>
+        <a href="#" onclick="openModal('signupModal'); document.getElementById('user_type').value='ngo'; toggleFields();" class="btn-secondary">Join as NGO</a>
+      </div>
+
+    {% elif request.user.user_type == "donor/recipient" %}
+      <h1>Welcome, {{ request.user.username }}!</h1>
+      <p>Ready to donate or request help today? Explore items, campaigns, and NGOs now.</p>
+      <div class="hero-buttons">
+        <a href="{% url 'donate_item' %}" class="btn-primary">Donate Now</a>
+        <a href="{% url 'donate_to_requests' %}" class="btn-secondary">Browse Requests</a>
+      </div>
+
+    {% elif request.user.user_type == "ngo" %}
+      <h1>Welcome, {{ request.user.username }} (NGO)</h1>
+      <p>Create campaigns, manage donations, and connect with donors in your community.</p>
+      <div class="hero-buttons">
+        <a href="{% url 'create_campaign' %}" class="btn-primary">Create Campaign</a>
+        <a href="{% url 'explore_donations' %}" class="btn-secondary">Explore Donations</a>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="hero-image">
+    <div class="hero-slideshow">
+      <img src="{% static 'donations/images/hero1.png' %}" alt="Hero Image 1">
+      <img src="{% static 'donations/images/hero2.png' %}" alt="Hero Image 2">
+      <img src="{% static 'donations/images/hero3.png' %}" alt="Hero Image 3">
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= Welcome Features ================= -->
+<section class="welcome-section">
+  <h2>Welcome to Donature</h2>
+  <div class="features-grid">
+    {% for item in features %}
+      <div class="feature-card">
+        <img src="{% static item.icon %}" alt="{{ item.title }}">
+        <p>{{ item.title }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ================= Together We Give ================= -->
+ <h2 class="tog">Together We Give</h2>
+<section class="together-section">
+  <img src="{% static 'donations/images/donation-box.jpg' %}" class="together-img" alt="Donation Box">
+  <div class="together-text">
+    <p>
+  Every act of giving, no matter how small, has the power to change a life. 
+  When we come together as a community, our collective kindness becomes a force of hope — 
+  turning despair into opportunity and isolation into belonging. 
+  Through every donated item, every shared smile, and every heartfelt gesture, 
+  we build a bridge of compassion that reaches those in need. 
+  Together, we are not just giving things — we are giving love, dignity, and a chance for a better tomorrow.
+</p>
+
+<blockquote class="inspire-quote">
+  “It's not how much we give, but how much love we put into giving.”  
+  <span>— Mother Teresa</span>
+</blockquote>
+
+  </div>
+</section>
+
+<!-- ================= Carousel: NGO Campaigns ================= -->
+<section class="carousel-section">
+  <h2>Featured Campaigns</h2>
+  <div class="carousel">
+    {% for campaign in ngo_campaigns %}
+      <div class="carousel-item">
+        <img src="{% if campaign.image %}{{ campaign.image.url }}{% else %}{% static 'donations/images/default-campaign.png' %}{% endif %}" alt="{{ campaign.title }}">
+        <h3>{{ campaign.title }}</h3>
+        <p>{{ campaign.description|truncatechars:100 }}</p>
+
+        <a href="{% url 'campaign_detail' campaign.id %}" class="btn-primary">See More</a>
+      </div>
+    {% empty %}
+      <p>No NGO campaigns available yet.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ================= Carousel: Donated Items ================= -->
+<section class="carousel-section">
+  <h2>Donated Items</h2>
+  <div class="carousel">
+    {% for item in donate_items %}
+      <div class="carousel-item">
+        {% if item.images.first %}
+          <img src="{{ item.images.first.image.url }}" alt="{{ item.title }}">
+        {% else %}
+          <img src="{% static 'donations/images/default-item.png' %}" alt="{{ item.title }}">
+        {% endif %}
+        <h3>{{ item.title }}</h3>
+        <a href="{% url 'donation_detail' item.id %}" class="btn-primary">See More</a>
+      </div>
+    {% empty %}
+      <p>No donated items available yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}
