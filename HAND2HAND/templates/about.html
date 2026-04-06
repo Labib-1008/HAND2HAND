@@ -1,0 +1,38 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'donations/css/about.css' %}">
+
+<div class="about-us-container">
+
+    <!-- =================== Hero Section =================== -->
+    <section class="about-hero">
+        <div class="hero-text">
+            <h1>Donature – Empowering Generosity</h1>
+            <p>Connecting donors, recipients, and NGOs to make a meaningful impact every day.</p>
+        </div>
+        <div class="hero-image">
+            <img src="{% static 'donations/images/about-hero.png' %}" alt="About Donature">
+        </div>
+    </section>
+
+    <!-- =================== Our Story =================== -->
+    <section class="our-story">
+        <h2>Our Story</h2>
+        <p>Founded in 2023, Donature started with a simple idea: connecting kind-hearted donors to people and communities in need. From our first donation to thousands delivered, our journey is powered by compassion, transparency, and the belief that small acts of generosity create lasting impact.</p>
+        <blockquote>"Not all of us can do great things. But we can do small things with great love." – Mother Teresa</blockquote>
+    </section>
+
+    <!-- =================== Impact Stats =================== -->
+    <section class="impact-stats">
+        <h2>Our Impact</h2>
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>1,245+</h3>
+                <p>Donations Delivered</p>
+            </div>
+            <div class="stat-card">
+                <h3>68</h3>
+                <p>Active NGOs</p>
+            </div>
