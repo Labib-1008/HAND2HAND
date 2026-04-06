@@ -28,3 +28,39 @@
             <hr>
             <p class="description">{{ donation_item.description }}</p>
         </div>
+</div>
+
+    <div class="detail-actions">
+        {% if user == donation_item.donor %}
+            <a href="{% url 'edit_donation' donation_item.id %}" class="btn-edit">Edit</a>
+            <form action="{% url 'delete_donation' donation_item.id %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-delete" onclick="return confirm('Are you sure?');">Delete</button>
+            </form>
+
+            {% if donation_item.claims.exists %}
+                <h3>Claims Received</h3>
+                <div class="claims-list">
+                    {% for claim in donation_item.claims.all %}
+                        <div class="claim-card">
+                            <p><strong>Claimed by:</strong> {{ claim.claimant.username }}</p>
+                            <p><strong>Message:</strong> {{ claim.message }}</p>
+                            <p><strong>Contact Number:</strong> {{ claim.contact_number }}</p>
+                            <p><strong>Preferred Date/Time:</strong> {{ claim.preferred_date|date:"M d, Y H:i" }}</p>
+                            <p><strong>Status:</strong> {{ claim.get_status_display }}</p>
+
+                            {% if claim.status == 'pending' %}
+                                <a href="{% url 'handle_claim' claim.id 'approve' %}" class="btn-approve">Approve</a>
+                                <a href="{% url 'handle_claim' claim.id 'reject' %}" class="btn-reject">Reject</a>
+                            {% elif claim.status|lower == 'approved' %}
+    <a href="{% url 'complete_claim' claim.id %}" class="btn-complete">Mark as Completed</a>
+
+                            {% elif claim.status == 'completed' %}
+                                <span class="claim-completed">✅ Completed</span>
+                            {% elif claim.status == 'rejected' %}
+                                <span class="claim-rejected">❌ Rejected</span>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
