@@ -1,0 +1,30 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'donations/css/donation_detail.css' %}">
+
+<div class="donation-detail-container">
+    <div class="detail-header">
+        <h1>{{ donation_item.title }}</h1>
+        <p class="date">Posted on {{ donation_item.created_at|date:"M d, Y" }}</p>
+    </div>
+
+    <div class="detail-body">
+        <div class="detail-image">
+            {% if donation_item.images.first %}
+                <img src="{{ donation_item.images.first.image.url }}" alt="{{ donation_item.title }}">
+            {% else %}
+                <img src="{% static 'images/default-donation.jpg' %}" alt="{{ donation_item.title }}">
+            {% endif %}
+        </div>
+
+        <div class="detail-info">
+            <p><strong>Category:</strong> {{ donation_item.category.name }}</p>
+            <p><strong>Quantity:</strong> {{ donation_item.quantity }}</p>
+            <p><strong>Urgency:</strong> {{ donation_item.get_urgency_display }}</p>
+            <p><strong>Location:</strong> {{ donation_item.location }}</p>
+            <p><strong>Status:</strong> {{ donation_item.get_status_display }}</p>
+            <hr>
+            <p class="description">{{ donation_item.description }}</p>
+        </div>
