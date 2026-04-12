@@ -6,21 +6,21 @@
 
 ## ✨ Features
 
-- 💸 Easy donation system  
-- 👥 Connect donors with people in need  
-- 📦 Track donation requests and status  
-- 🛠️ Admin control for managing activities  
-- 🔐 Secure user authentication  
+-  Easy donation system  
+-  Connect donors with people in need  
+-  Track donation requests and status  
+-  Admin control for managing activities  
+-  Secure user authentication  
 
 ---
 
-## 🎯 Mission
+##  Mission
 
 To build a community where helping others is simple, accessible, and efficient — empowering people to support each other hand to hand.
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ```bash
 git clone https://github.com/Labib-1008/HAND2HAND.git
