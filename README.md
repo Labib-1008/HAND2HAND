@@ -14,7 +14,7 @@
 
 ---
 
-##  Mission
+## 🎯 Mission
 
 To build a community where helping others is simple, accessible, and efficient — empowering people to support each other hand to hand.
 
