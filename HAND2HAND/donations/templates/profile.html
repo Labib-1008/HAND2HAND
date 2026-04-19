@@ -1,0 +1,327 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block title %}MY ACCOUNT - Donature{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'donations/css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="compact-profile-container">
+    
+    <!-- Profile Header -->
+    <div class="profile-header-compact">
+        <h2>MY ACCOUNT</h2>
+        <span class="profile-type-badge">
+            {% if user_type == 'donor/recipient' %}Donor/Recipient
+            {% elif user_type == 'ngo' %}NGO
+            {% else %}User{% endif %}
+        </span>
+    </div>
+
+    <div class="compact-layout">
+        <!-- Left Side - Profile Photo & Quick Actions -->
+        <div class="compact-left">
+            <div class="profile-photo-compact">
+                {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="Profile Picture">
+                {% else %}
+                    <div class="default-avatar-sm">
+                        {{ user.username|first|upper }}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <form method="POST" action="{% url 'upload_photo' %}" enctype="multipart/form-data" class="photo-upload-form" id="photoUploadForm">
+    {% csrf_token %}
+    <input type="file" name="profile_picture" accept="image/*" required style="display: none;" id="photoInput" 
+           onchange="document.getElementById('photoUploadForm').submit();">
+    <button type="button" class="change-photo-btn-sm" onclick="document.getElementById('photoInput').click()">
+        📷 Change Photo
+    </button>
+</form>
+
+
+<div id="uploadStatus" style="display: none; margin-top: 8px; text-align: center;">
+    <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
+        <div style="width: 100px; height: 4px; background: #ddd; border-radius: 2px;">
+            <div id="uploadProgress" style="height: 100%; background: #27ae60; width: 0%; border-radius: 2px; transition: width 0.3s ease;"></div>
+        </div>
+        <span id="statusText" style="font-size: 12px; color: #666;">Uploading...</span>
+    </div>
+</div>
+
+            
+        </div>
+
+        <!-- Right Side - Profile Information -->
+        <div class="compact-right">
+            <!-- Personal Info Card -->
+            <div class="info-card">
+                <h3 class="card-title">Personal Information</h3>
+                <form class="compact-form" method="POST" action="{% url 'update_profile' %}">
+                    {% csrf_token %}
+                    
+                    <div class="form-grid-compact">
+                        <div class="form-group-sm">
+                            <label>Username</label>
+                            <input type="text" value="{{ user.username }}" disabled class="compact-input">
+                        </div>
+
+                        <div class="form-group-sm">
+                            <label>Email</label>
+                            <input type="email" value="{{ user.email }}" disabled class="compact-input">
+                        </div>
+
+                        {% if user_type == 'donor/recipient' %}
+                        <div class="form-group-sm">
+                            <label>Full Name</label>
+                            <input type="text" name="full_name" value="{{ profile.full_name }}" required class="compact-input">
+                        </div>
+                        {% endif %}
+
+                        {% if user_type == 'ngo' %}
+                        <div class="form-group-sm">
+                            <label>NGO Name</label>
+                            <input type="text" name="ngo_name" value="{{ profile.ngo_name }}" required class="compact-input">
+                        </div>
+
+                        <div class="form-group-sm">
+                            <label>Contact Person</label>
+                            <input type="text" name="contact_person" value="{{ profile.contact_person }}" required class="compact-input">
+                        </div>
+                        {% endif %}
+
+                        <div class="form-group-sm">
+                            <label>Mobile</label>
+                            <input type="tel" name="mobile_number" value="{{ profile.mobile_number }}" required class="compact-input">
+                        </div>
+
+                        <div class="form-group-sm">
+                            <label>City/Postal</label>
+                            <input type="text" name="city_postal" value="{{ profile.city_postal }}" required class="compact-input">
+                        </div>
+
+                        <div class="form-group-sm full-width">
+                            <label>Address</label>
+                            <textarea name="address" rows="2" required class="compact-input">{{ profile.address }}</textarea>
+                        </div>
+
+                        {% if user_type == 'ngo' %}
+                        <div class="form-group-sm">
+                            <label>NGO Type</label>
+                            <input type="text" name="ngo_type" value="{{ profile.ngo_type }}" required class="compact-input">
+                        </div>
+
+                        <div class="form-group-sm full-width">
+                            <label>Social Link</label>
+                            <input type="url" name="social_link" value="{{ profile.social_link|default:'' }}" placeholder="https://..." class="compact-input">
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="save-btn-sm">
+                        💾 Save Changes
+                    </button>
+                </form>
+            </div>
+
+            <!-- Password Change Card -->
+            <div class="info-card password-form">
+                <h3 class="card-title">Change Password</h3>
+                <form method="POST" action="{% url 'change_password' %}" class="compact-form">
+                    {% csrf_token %}
+                    <div class="form-grid-compact">
+                        <div class="form-group-sm">
+                            <label>Current</label>
+                            <input type="password" name="old_password" required class="compact-input">
+                        </div>
+                        <div class="form-group-sm">
+                            <label>New</label>
+                            <input type="password" name="new_password1" required class="compact-input">
+                        </div>
+                        <div class="form-group-sm">
+                            <label>Confirm</label>
+                            <input type="password" name="new_password2" required class="compact-input">
+                        </div>
+                    </div>
+                    <button type="submit" class="change-password-btn-sm">
+                        🔒 Update Password
+                    </button>
+                </form>
+            </div>
+
+            <!-- Documents Card -->
+            {% if profile.nid_birth_certificate or profile.reg_certificate %}
+            <div class="info-card">
+                <h3 class="card-title">Documents</h3>
+                <div class="documents-compact">
+                    {% if user_type == 'donor/recipient' and profile.nid_birth_certificate %}
+                    <div class="doc-item">
+                        <span class="doc-label">NID/Birth Certificate</span>
+                        <a href="{{ profile.nid_birth_certificate.url }}" target="_blank" class="doc-btn">
+                            📄 View
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    {% if user_type == 'ngo' %}
+                    {% if profile.reg_certificate %}
+                    <div class="doc-item">
+                        <span class="doc-label">Registration Certificate</span>
+                        <a href="{{ profile.reg_certificate.url }}" target="_blank" class="doc-btn">
+                            📄 View
+                        </a>
+                    </div>
+                    {% endif %}
+                    
+                    {% if profile.nid_birth_certificate %}
+                    <div class="doc-item">
+                        <span class="doc-label">NID/Birth Certificate</span>
+                        <a href="{{ profile.nid_birth_certificate.url }}" target="_blank" class="doc-btn">
+                            📄 View
+                        </a>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Quick Links Footer -->
+    <div class="quick-links-footer">
+        <div class="action-buttons-compact">
+            {% if user_type == 'donor/recipient' %}
+            <a href="{% url 'my_rewards' %}" class="action-btn-compact">
+                🏆 Rewards
+            </a>
+            <a href="{% url 'my_donations' %}" class="action-btn-compact">
+                📦 Donations
+            </a>
+            <a href="{% url 'my_requests' %}" class="action-btn-compact">
+                🤲 Requests
+            </a>
+            {% elif user_type == 'ngo' %}
+            <a href="{% url 'ngo_donation_history' %}" class="action-btn-compact">
+                💰 Received
+            </a>
+            <a href="{% url 'create_campaign' %}" class="action-btn-compact">
+                🚀 Campaign
+            </a>
+            <a href="{% url 'my_campaigns' %}" class="action-btn-compact">
+                📋 My Campaigns
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+
+
+<script>
+// Fixed AJAX photo upload
+document.getElementById('photoInput').addEventListener('change', function() {
+    const file = this.files[0];
+    if (!file) return;
+    
+    const button = document.querySelector('.change-photo-btn-sm');
+    const status = document.getElementById('uploadStatus');
+    const progress = document.getElementById('uploadProgress');
+    const statusText = document.getElementById('statusText');
+    const originalText = button.textContent;
+    
+    // Show loading state
+    button.textContent = '📤 Uploading...';
+    button.disabled = true;
+    status.style.display = 'block';
+    progress.style.width = '0%';
+    statusText.textContent = 'Uploading...';
+    statusText.style.color = '#666';
+    
+    // Create FormData
+    const formData = new FormData();
+    formData.append('profile_picture', file);
+    formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+    
+    // AJAX upload
+    fetch("{% url 'upload_photo' %}", {
+        method: "POST",
+        body: formData,
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            progress.style.width = '100%';
+            statusText.textContent = '✅ Success! Reloading...';
+            statusText.style.color = '#27ae60';
+            
+            // Page reload after 1 second to show new photo
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+            
+        } else {
+            statusText.textContent = '❌ ' + data.message;
+            statusText.style.color = '#e74c3c';
+            button.textContent = originalText;
+            button.disabled = false;
+            
+            // Hide error after 5 seconds
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 5000);
+        }
+    })
+    .catch(error => {
+        console.error('Upload error:', error);
+        statusText.textContent = '❌ Upload failed. Please try again.';
+        statusText.style.color = '#e74c3c';
+        button.textContent = originalText;
+        button.disabled = false;
+        
+        // Hide error after 5 seconds
+        setTimeout(() => {
+            status.style.display = 'none';
+        }, 5000);
+    });
+    
+    // Simulate progress for better UX
+    let progressValue = 0;
+    const progressInterval = setInterval(() => {
+        if (progressValue >= 70) {
+            clearInterval(progressInterval);
+            return;
+        }
+        progressValue += 10;
+        progress.style.width = progressValue + '%';
+    }, 300);
+});
+
+// Smooth scrolling for anchor links (keep this as it is)
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+</script>
+
+{% endblock %}
