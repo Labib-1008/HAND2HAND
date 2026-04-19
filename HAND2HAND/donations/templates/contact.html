@@ -1,0 +1,46 @@
+<!-- donations/templates/donations/contact.html -->
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'donations/css/contact.css' %}">
+
+<div class="contact-container">
+    <h1>Contact Us</h1>
+    <p>We’d love to hear from you! Fill out the form below and we will get back to you.</p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-submit">Send Message</button>
+    </form>
+
+    <div class="contact-info">
+        <h2>Other Ways to Reach Us</h2>
+        <p><i class="fas fa-envelope"></i> Email: support@donature.com</p>
+        <p><i class="fas fa-phone"></i> Phone: +880123456789</p>
+        <p><i class="fas fa-map-marker-alt"></i> Address: 123 Donature St, Dhaka, Bangladesh</p>
+
+        <h3>Follow Us</h3>
+        <div class="social-icons">
+            <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://wa.me/880123456789" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+
+        <h3>Our Location</h3>
+        <div class="map-container">
+            <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.123456789!2d90.4123456!3d23.8101234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755cxxxxxxx:0xabcdef1234567890!2sDhaka%2C+Bangladesh!5e0!3m2!1sen!2sus!4v1690000000000!5m2!1sen!2sus"
+    width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+
+    </div>
+</div>
+{% endblock %}

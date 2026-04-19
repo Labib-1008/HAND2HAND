@@ -1,0 +1,11 @@
+{% extends "donations/base.html" %}
+{% block content %}
+<div class="container" style="max-width:600px; margin:auto; padding:20px;">
+    <h2>Are you sure you want to delete "{{ item.title }}"?</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+        <a href="{% url 'my_donations' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}
