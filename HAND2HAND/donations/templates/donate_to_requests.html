@@ -1,0 +1,101 @@
+{% extends "donations/base.html" %}
+{% load static %}
+{% load humanize %}  {# timesince nicely দেখানোর জন্য #}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'donations/css/donate_to_requests.css' %}">
+
+<div class="donate-requests-container">
+
+    <!-- Sidebar Filters -->
+    <aside class="filters-sidebar">
+        <h3>Filter Requests</h3>
+        <form method="get">
+            <!-- Category Filter -->
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select name="category" id="category">
+                    <option value="">All</option>
+                    {% for cat in categories %}
+                        <option value="{{ cat.id }}" {% if cat.id|stringformat:"s" == selected_category %}selected{% endif %}>
+                            {{ cat.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Location Filter -->
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" name="location" id="location" value="{{ location }}" placeholder="Enter location">
+            </div>
+
+            <!-- Search Filter -->
+            <div class="form-group">
+                <label for="search">Search</label>
+                <input type="text" name="search" id="search" value="{{ search }}" placeholder="Search requests">
+            </div>
+
+            <!-- Urgency Filter -->
+            <div class="form-group">
+                <label for="urgency">Urgency</label>
+                <select name="urgency" id="urgency">
+                    <option value="">All</option>
+                    <option value="high" {% if urgency == 'high' %}selected{% endif %}>High</option>
+                    <option value="medium" {% if urgency == 'medium' %}selected{% endif %}>Medium</option>
+                    <option value="low" {% if urgency == 'low' %}selected{% endif %}>Low</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-filter">Filter</button>
+        </form>
+    </aside>
+
+    <!-- Requests Grid -->
+    <section class="requests-grid">
+        {% if requests_list %}
+            {% for req in requests_list %}
+            <div class="request-card {{ req.urgency }}">
+                {% if req.image %}
+                <img src="{{ req.image.url }}" alt="{{ req.title }}">
+                {% endif %}
+
+                <!-- Urgency Badge -->
+                {% if req.urgency == "high" %}
+                    <span class="badge urgent">Urgent</span>
+                {% endif %}
+
+                <h3>{{ req.title }}</h3>
+
+                <!-- Meta Info -->
+                <div class="meta-info">
+                    <span class="category">{{ req.category.name }}</span>
+                    <span class="location"><i class="fas fa-map-marker-alt"></i> {{ req.delivery_location }}</span>
+                    <span class="posted-time">{{ req.created_at|timesince }} ago</span>
+                </div>
+
+                <p class="desc">{{ req.description|truncatewords:20 }}</p>
+
+                <!-- Action Buttons -->
+                <div class="request-actions">
+                    <a href="{% url 'request_detail' req.id %}" class="btn btn-details">View Details</a>
+                    {% if request.user.is_authenticated %}
+    <a href="{% url 'donate_item_to_request' req.id %}" class="btn btn-donate">Donate</a>
+{% else %}
+    <a href="#" class="btn btn-donate" onclick="openModal('loginModal')">Donate</a>
+{% endif %}
+
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-results">
+                <i class="fas fa-search fa-3x"></i>
+                <h3>No donation request matches your filters</h3>
+                <p>Try adjusting the filters or check back later for new requests.</p>
+            </div>
+        {% endif %}
+    </section>
+
+</div>
+{% endblock %}

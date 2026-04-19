@@ -1,0 +1,20 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>Donate to Needs</h2>
+    <div class="needs-list">
+        {% for need in needs %}
+        <div class="need-item">
+            <h3>{{ need.title }}</h3>
+            <p>{{ need.description }}</p>
+            <p>Requested by: {{ need.requester.username }}</p>
+            <button>Donate to this Need</button>
+        </div>
+        {% empty %}
+        <p>No approved donation requests at the moment.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
