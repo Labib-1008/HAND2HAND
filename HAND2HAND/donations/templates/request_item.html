@@ -1,0 +1,150 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'donations/css/request_item.css' %}">
+
+<div class="donate-container">
+    <div class="donate-header">
+        {% if form.instance.pk %}
+            <h1><i class="fas fa-edit"></i> Edit Request</h1>
+        {% else %}
+            <h1><i class="fas fa-hands-helping"></i> Request Item</h1>
+        {% endif %}
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="donate-form">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <!-- Upload Image -->
+        <section class="form-section">
+            <h2>Upload Item Image</h2>
+            <div class="form-group">
+                {{ form.image.label_tag }}
+                {{ form.image }}
+                {{ form.image.errors }}
+
+                <!-- Preview old or new image -->
+                <div id="preview">
+                    {% if form.instance.image %}
+                        <img id="preview-img" src="{{ form.instance.image.url }}" style="max-width:200px; margin-top:10px;">
+                    {% else %}
+                        <img id="preview-img" style="display:none; max-width:200px; margin-top:10px;">
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Request Details -->
+        <section class="form-section">
+            <div class="form-group">
+                {{ form.title.label_tag }}
+                {{ form.title }}
+                {{ form.title.errors }}
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    {{ form.category.label_tag }}
+                    {{ form.category }}
+                    {{ form.category.errors }}
+                </div>
+                <div class="form-group quantity-field">
+                    {{ form.quantity.label_tag }}
+                    <div class="quantity-input">
+                        <button type="button" class="qty-btn" onclick="updateQuantity(-1)">-</button>
+                        {{ form.quantity }}
+                        <button type="button" class="qty-btn" onclick="updateQuantity(1)">+</button>
+                    </div>
+                    {{ form.quantity.errors }}
+                </div>
+            </div>
+        </section>
+
+        <!-- Description & Extra Info -->
+        <section class="form-section">
+            <div class="form-group">
+                {{ form.description.label_tag }}
+                {{ form.description }}
+                {{ form.description.errors }}
+            </div>
+
+            <div class="form-group">
+                {{ form.needed_before.label_tag }}
+                {{ form.needed_before }}
+                {{ form.needed_before.errors }}
+            </div>
+
+            <div class="form-group">
+                {{ form.delivery_location.label_tag }}
+                {{ form.delivery_location }}
+                {{ form.delivery_location.errors }}
+            </div>
+
+            <div class="form-group">
+                {{ form.contact_number.label_tag }}
+                {{ form.contact_number }}
+                {{ form.contact_number.errors }}
+            </div>
+        </section>
+
+        <!-- Urgency -->
+        <div class="form-group">
+            {{ form.urgency.label_tag }}
+            {{ form.urgency }}
+            {{ form.urgency.errors }}
+            {% if form.urgency.help_text %}
+                <small class="form-text text-muted">{{ form.urgency.help_text }}</small>
+            {% endif %}
+        </div>
+
+        <!-- Notify -->
+        <div class="form-check mb-3">
+            {{ form.notify_immediately }}
+            {{ form.notify_immediately.label_tag }}
+            {% if form.notify_immediately.help_text %}
+                <small class="form-text text-muted">{{ form.notify_immediately.help_text }}</small>
+            {% endif %}
+        </div>
+
+        <!-- Buttons -->
+        <div class="form-buttons">
+            <a href="{% url 'my_requests' %}" class="btn btn-cancel">Cancel</a>
+            <button type="submit" class="btn btn-confirm">
+                {% if form.instance.pk %}Save Changes{% else %}Confirm{% endif %}
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+function updateQuantity(amount) {
+    const input = document.getElementById("id_quantity");
+    let currentValue = parseInt(input.value || 0);
+    let newValue = currentValue + amount;
+    if (newValue >= 1) {
+        input.value = newValue;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('id_image');
+    const previewImg = document.getElementById('preview-img');
+
+    if(fileInput){
+        fileInput.addEventListener('change', function(){
+            const file = this.files[0];
+            if(file && file.type.startsWith('image/')){
+                const reader = new FileReader();
+                reader.onload = function(e){
+                    previewImg.src = e.target.result;
+                    previewImg.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
