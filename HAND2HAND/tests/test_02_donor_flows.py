@@ -12,6 +12,9 @@ from tests.test_helpers import (
 )
 
 
+
+
+
 class TestDonorFlows:
     """Test complete donor/recipient workflows"""
 
@@ -94,6 +97,7 @@ class TestDonorFlows:
                 time.sleep(2)
         
         print("✅ Donation browsing and filtering successful")
+
 
     def test_claim_donation(self, driver, donor_user2, live_server, sample_donations, db):
         """Test claiming a donation with proper waits and verification"""
