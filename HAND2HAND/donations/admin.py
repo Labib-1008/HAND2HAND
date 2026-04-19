@@ -16,6 +16,9 @@ class NotificationAdmin(admin.ModelAdmin):
 
 
 
+
+
+
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'short_message', 'created_at')
