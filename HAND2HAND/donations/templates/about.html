@@ -1,0 +1,123 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'donations/css/about.css' %}">
+
+<div class="about-us-container">
+
+    <!-- =================== Hero Section =================== -->
+    <section class="about-hero">
+        <div class="hero-text">
+            <h1>Donature – Empowering Generosity</h1>
+            <p>Connecting donors, recipients, and NGOs to make a meaningful impact every day.</p>
+        </div>
+        <div class="hero-image">
+            <img src="{% static 'donations/images/about-hero.png' %}" alt="About Donature">
+        </div>
+    </section>
+
+    <!-- =================== Our Story =================== -->
+    <section class="our-story">
+        <h2>Our Story</h2>
+        <p>Founded in 2023, Donature started with a simple idea: connecting kind-hearted donors to people and communities in need. From our first donation to thousands delivered, our journey is powered by compassion, transparency, and the belief that small acts of generosity create lasting impact.</p>
+        <blockquote>"Not all of us can do great things. But we can do small things with great love." – Mother Teresa</blockquote>
+    </section>
+
+    <!-- =================== Impact Stats =================== -->
+    <section class="impact-stats">
+        <h2>Our Impact</h2>
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>1,245+</h3>
+                <p>Donations Delivered</p>
+            </div>
+            <div class="stat-card">
+                <h3>68</h3>
+                <p>Active NGOs</p>
+            </div>
+            <div class="stat-card">
+                <h3>12,300+</h3>
+                <p>People Helped</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================== Mission & Vision =================== -->
+    <section class="mission-vision">
+        <div class="mv-card">
+            <h3>Our Mission</h3>
+            <p>Facilitating seamless donation management to reach those in need efficiently.</p>
+        </div>
+        <div class="mv-card">
+            <h3>Our Vision</h3>
+            <p>To be the most trusted platform connecting donors, recipients, and NGOs, fostering a culture of giving.</p>
+        </div>
+        <div class="mv-card">
+            <h3>Our Values</h3>
+            <p>Transparency, Efficiency, Empathy, Collaboration, and Impact-driven actions.</p>
+        </div>
+    </section>
+
+    <!-- =================== How It Works =================== -->
+    <section class="how-it-works">
+        <h2>How Donature Works</h2>
+        <div class="steps-container">
+            <div class="step-card">
+                <img src="{% static 'donations/images/icon-donate.png' %}" alt="Donate Icon">
+                <h4>Donate Items</h4>
+                <p>Submit your items and reach those in need efficiently.</p>
+            </div>
+            <div class="step-card">
+                <img src="{% static 'donations/images/icon-request.png' %}" alt="Request Icon">
+                <h4>Request Items</h4>
+                <p>NGOs and recipients can post their requirements easily.</p>
+            </div>
+            <div class="step-card">
+                <img src="{% static 'donations/images/icon-ngo.png' %}" alt="NGO Icon">
+                <h4>NGO Collaboration</h4>
+                <p>NGOs manage campaigns and track donations seamlessly.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================== Team Section =================== -->
+    <section class="team-section">
+        <h2>Meet Our Team</h2>
+        <div class="team-container">
+            <div class="team-card">
+                <img src="{% static 'donations/images/Alif.jpg' %}" alt="Team Member">
+                <h4>Alif Mahmud Talha</h4>
+                <p>Founder & CEO</p>
+            </div>
+            <div class="team-card">
+                <img src="{% static 'donations/images/Nishat.jpg' %}" alt="Team Member">
+                <h4>Nishat Anjum</h4>
+                <p>Lead Developer</p>
+            </div>
+            <div class="team-card">
+                <img src="{% static 'donations/images/Annie.jpg' %}" alt="Team Member">
+                <h4>Sharmin Sultana Annie</h4>
+                <p>Lead Designer</p>
+            </div>
+            <div class="team-card">
+                <img src="{% static 'donations/images/Tabeeb.jpg' %}" alt="Team Member">
+                <h4>Tabeeb Tazwar Ahmed</h4>
+                <p>Community Manager</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================== CTA Button =================== -->
+    <section class="about-cta">
+        <h2>Join Us in Making a Difference</h2>
+        <p>Your contribution, whether time or items, can change lives. Become a part of our growing Donature community today.</p>
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'donate_item' %}" class="btn-cta">Donate Now</a>
+        {% else %}
+            <a href="#" onclick="openModal('loginModal')" class="btn-cta">Donate Now</a>
+        {% endif %}
+    </section>
+
+</div>
+{% endblock %}

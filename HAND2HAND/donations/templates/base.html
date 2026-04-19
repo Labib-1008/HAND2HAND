@@ -1,0 +1,395 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Donature{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'donations/css/base.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+ <!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="logo-area">
+      <img src="{% static 'donations/images/logo.png' %}" alt="Logo" class="logo">
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="{% url 'home' %}">Home</a></li>
+
+      {% if request.user.is_authenticated %}
+        {% if request.user.user_type == 'donor/recipient' %}
+          <!-- Donate Dropdown for Normal User -->
+          <li class="dropdown">
+            <a href="#">Donate <i class="fa fa-caret-down"></i></a>
+            <ul class="dropdown-content">
+              <li><a href="{% url 'donate_item' %}">Donate Item</a></li>
+              <li><a href="{% url 'request_item' %}">Request Item</a></li>
+              <li><a href="{% url 'donate_to_requests' %}">Donate to Requests</a></li>
+            </ul>
+          </li>
+
+          <li><a href="{% url 'explore_donations' %}">Explore Donations</a></li>
+          <li><a href="{% url 'explore_campaigns' %}">Explore Campaigns</a></li>
+
+        {% elif request.user.user_type == 'ngo' %}
+          <!-- Campaigns Dropdown for NGO -->
+          <li class="dropdown">
+            <a href="#">Campaigns <i class="fa fa-caret-down"></i></a>
+            <ul class="dropdown-content">
+              <li><a href="{% url 'create_campaign' %}">Create Campaign</a></li>
+              <li><a href="{% url 'my_campaigns' %}">My Campaigns</a></li>
+              <li><a href="{% url 'explore_campaigns' %}">View All Campaigns</a></li>
+            </ul>
+          </li>
+        {% endif %}
+
+      {% else %}
+        <!-- Guest User -->
+        <li class="dropdown">
+          <a href="#">Donate <i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-content">
+            <li><a href="#" onclick="openModal('loginModal')">Donate Item</a></li>
+            <li><a href="#" onclick="openModal('loginModal')">Request Item</a></li>
+            <li><a href="{% url 'donate_to_requests' %}">Donate to Requests</a></li>
+          </ul>
+        </li>
+        <li><a href="{% url 'explore_donations' %}">Explore Donations</a></li>
+        <li><a href="{% url 'explore_campaigns' %}">Explore Campaigns</a></li>
+      {% endif %}
+
+      <li><a href="{% url 'about' %}">About Us</a></li>
+      <li><a href="{% url 'contact' %}">Contact</a></li>
+    </ul>
+
+    <div class="auth-btn">
+      {% if request.user.is_authenticated %}
+        <!-- 🔔 Notification Icon -->
+        <!-- ===== Notification Dropdown ===== -->
+<div class="notification-dropdown">
+  <button class="notification-btn">
+    <i class="fa fa-bell"></i>
+    {% if notifications_unread_count > 0 %}
+      <span class="badge">{{ notifications_unread_count }}</span>
+    {% endif %}
+  </button>
+
+  <div class="notification-content">
+    {% for note in notifications %}
+      <a href="{{ note.link|default:'#' }}" class="notification-item {% if not note.is_read %}unread{% endif %}">
+        {{ note.message }}
+        <span class="notification-time">{{ note.created_at|timesince }} ago</span>
+      </a>
+    {% empty %}
+      <p class="no-notifications">No new notifications</p>
+    {% endfor %}
+    <a href="{% url 'notifications_page' %}" class="view-all">View all</a>
+  </div>
+</div>
+
+
+
+        <!-- 👤 User Dropdown -->
+        <div class="dropdown">
+          <button class="dropdown-btn">
+            {{ request.user.username }}
+            <i class="fa fa-bars"></i>
+          </button>
+          <div class="dropdown-content">
+            {% if request.user.user_type == 'donor/recipient' %}
+              <a href="{% url 'profile' %}">Profile</a>
+              <a href="{% url 'my_donations' %}">My Donations</a>
+              <a href="{% url 'my_requests' %}">My Requests</a>
+              <a href="{% url 'my_claims' %}">My Claims</a>
+              <a href="{% url 'my_rewards' %}">My Rewards</a>
+              <a href="{% url 'logout' %}">Log out</a>
+            {% elif request.user.user_type == 'ngo' %}
+              <a href="{% url 'profile' %}">Profile</a>
+              <a href="{% url 'ngo_donation_history' %}">Donation History</a>
+              <a href="{% url 'my_campaigns' %}">My Campaigns</a>
+              <a href="{% url 'logout' %}">Log out</a>
+            
+            
+            {% endif %}
+          </div>
+        </div>
+      {% else %}
+        <!-- Login/Signup button (only if NOT logged in) -->
+        <a href="#" onclick="openModal('loginModal')" class="login-btn">Log In / Sign Up</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+
+
+<!-- Dynamic Content -->
+<main>
+  {% if not request.user.is_authenticated or request.user.user_type != 'admin' %}
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="alert {{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endif %}
+
+  {% block content %}{% endblock %}
+</main>
+
+
+
+  <!-- Footer -->
+<footer class="footer">
+  <div class="footer-container">
+    <!-- Follow Us -->
+    <div class="footer-section">
+      <p class="footer-title">Follow Us</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <!-- Stay Connected -->
+    <div class="footer-section">
+      <p class="footer-title">Stay Connected With Donature</p>
+      <p class="footer-text">
+        We’ve moved to an opt-in system. Say ‘Yes’ to Donature and let us know how we can keep you
+        updated on donation opportunities, appeals, and community activities.
+      </p>
+      <a href="#" class="footer-link">Submit your details</a>
+    </div>
+
+    <!-- Language -->
+    <div class="footer-section">
+      <p class="footer-title">Select Language</p>
+      <select class="language-select">
+        <option>English</option>
+        <option>বাংলা</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Footer Links -->
+  <div class="footer-links">
+    <a href="#">Terms & Conditions</a>
+    <a href="#">Privacy Policy & Cookies</a>
+    <a href="#">Donation Policy</a>
+    <a href="#">Accessibility Statement</a>
+    <a href="#">Contact Us / Help & Support</a>
+  </div>
+
+  <!-- Bottom Text -->
+  <div class="footer-bottom">
+    © 2025 Donature | Connecting People, NGOs & Hope
+  </div>
+</footer>
+
+
+<!-- ===== LOGIN MODAL ===== -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('loginModal')">Cancel</button>
+
+    <!-- Left Side (Form) -->
+    <div class="modal-content">
+      <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <h2>Log In</h2>
+
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Enter your username" required>
+
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Enter your password" required>
+
+        <a href="#">Forgot Password?</a>
+
+        <button type="submit">LOGIN →</button>
+
+        <p class="or">or continue with</p>
+        <div class="social-icons">
+          <a href="#"><img src="{% static 'donations/images/google.png' %}" alt="Google"></a>
+          <a href="#"><img src="{% static 'donations/images/instagram.png' %}" alt="Instagram"></a>
+          <a href="#"><img src="{% static 'donations/images/facebook.png' %}" alt="Facebook"></a>
+        </div>
+      </form>
+
+      <p style="margin-top:10px;">
+        Don’t have an account? 
+        <a href="#" onclick="switchModal('loginModal','signupModal')">Sign Up</a>
+      </p>
+    </div>
+
+    <!-- Right Side -->
+    <div class="modal-side">
+      <img src="{% static 'donations/images/donate-illustration.png' %}" alt="Donate Illustration">
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== SIGNUP MODAL ===== -->
+<div class="modal-overlay" id="signupModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('signupModal')">Cancel</button>
+
+    <div class="modal-content">
+      <h2>Sign Up</h2>
+      <p>Join Donature as Donor, Recipient, or NGO and spread hope!</p>
+
+      <form id="signupForm" method="POST" action="{% url 'signup' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label for="user_type">Join As</label>
+        <select id="user_type" name="user_type" onchange="toggleFields()" required>
+          <option value="">Select Type</option>
+          <option value="donor/recipient">Donor/Recipient</option>
+          <option value="ngo">NGO</option>
+        </select>
+
+        <!-- COMMON FIELDS FOR ALL USER TYPES -->
+        <input type="text" name="username" placeholder="Choose a username" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password1" placeholder="Password" required>
+        <input type="password" name="password2" placeholder="Confirm Password" required>
+
+        <div id="donorFields">
+          <input type="text" name="full_name" placeholder="Full Name" required>
+
+          <small>Please upload your NID or Birth Certificate</small>
+          <input type="file" name="nid_birth_certificate" accept="image/*,.pdf" required>
+
+          <input type="text" name="city_postal" placeholder="City/Postal code" required>
+          <input type="text" name="address" placeholder="Address" required>
+          <input type="tel" name="mobile_number" placeholder="Mobile Number" required>
+        </div>
+
+        <div id="ngoFields" style="display:none;">
+          <input type="text" name="ngo_name" placeholder="NGO Name" required>
+
+          <small>Please upload your registration Certificate</small>
+          <input type="file" name="reg_certificate" accept="image/*,.pdf" required>
+
+          <input type="text" name="contact_person" placeholder="Contact Person Name" required>
+
+          <small>Please upload your NID or Birth Certificate</small>
+          <input type="file" name="ngo_nid_birth_certificate" accept="image/*,.pdf" required>
+          
+          <input type="text" name="city_postal" placeholder="City/Postal code" required>
+          <input type="text" name="address" placeholder="Address" required>
+          <input type="tel" name="mobile_number" placeholder="Mobile Number" required>
+          <input type="text" name="ngo_type" placeholder="NGO Type" required>
+          <input type="url" name="social_link" placeholder="Facebook / Instagram link">
+        </div>
+
+        <label class="terms">
+          <input type="checkbox" required> I agree to the Terms & Conditions
+        </label>
+        
+        <button type="submit" id="signupSubmitBtn">Confirm</button>
+      </form>
+
+      <div class="social-login">
+        <p>or continue with</p>
+        <div class="social-icons">
+          <a href="#"><img src="{% static 'donations/images/google.png' %}" alt="Google"></a>
+          <a href="#"><img src="{% static 'donations/images/instagram.png' %}" alt="Instagram"></a>
+          <a href="#"><img src="{% static 'donations/images/facebook.png' %}" alt="Facebook"></a>
+        </div>
+      </div>
+
+      <p style="margin-top:10px;">
+        Already have an account? 
+        <a href="#" onclick="switchModal('signupModal','loginModal')">Log In</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+  
+  <!-- ===== JS ===== -->
+<script>
+function toggleFields() {
+  const type = document.getElementById('user_type').value.toLowerCase(); // normalize case
+  const donorFields = document.getElementById('donorFields');
+  const ngoFields = document.getElementById('ngoFields');
+
+  if (type === "ngo") {
+    // Show NGO fields
+    ngoFields.style.display = "block";
+    donorFields.style.display = "none";
+
+    // Enable + require all NGO fields
+    ngoFields.querySelectorAll("input, select").forEach(el => {
+      el.disabled = false;
+      el.required = true;
+    });
+
+    // Disable donor fields
+    donorFields.querySelectorAll("input, select").forEach(el => {
+      el.disabled = true;
+      el.required = false;
+    });
+
+  } else if (type === "donor/recipient") {
+    // Show Donor fields
+    donorFields.style.display = "block";
+    ngoFields.style.display = "none";
+
+    // Enable + require donor fields
+    donorFields.querySelectorAll("input, select").forEach(el => {
+      el.disabled = false;
+      el.required = true;
+    });
+
+    // Disable NGO fields
+    ngoFields.querySelectorAll("input, select").forEach(el => {
+      el.disabled = true;
+      el.required = false;
+    });
+
+  } else {
+    // Hide both if nothing selected
+    donorFields.style.display = "none";
+    ngoFields.style.display = "none";
+
+    donorFields.querySelectorAll("input, select").forEach(el => el.required = false);
+    ngoFields.querySelectorAll("input, select").forEach(el => el.required = false);
+  }
+}
+
+function openModal(id) {
+  document.getElementById(id).classList.add("active");
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove("active");
+}
+
+function switchModal(closeId, openId) {
+  closeModal(closeId);
+  openModal(openId);
+}
+
+// Initialize on page load
+document.addEventListener("DOMContentLoaded", function() {
+  toggleFields();
+});
+</script>
+
+
+
+
+</body>
+</html>
