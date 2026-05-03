@@ -141,3 +141,50 @@ def manage_reviews(request):
     return render(request, "custom_admin/manage_reviews.html", {"reviews": reviews})
 
 
+def redirect_after_login(request):
+    if request.user.is_authenticated:
+        if request.user.user_type == "admin":
+            return redirect("admin_dashboard")  # ✅ custom admin panel
+        else:
+            return redirect("home")  # normal user dashboard/home
+    return redirect("login")
+
+
+@login_required
+@admin_only
+def admin_profile(request):
+    if request.method == "POST":
+        form_type = request.POST.get("form_type")
+
+        if form_type == "profile_info":
+            # Handle profile information update
+            user = request.user
+            name = request.POST.get("name")
+            email = request.POST.get("email")
+
+            user.username = name
+            user.email = email
+            user.save()
+
+            messages.success(request, "Profile updated successfully ✅")
+            return redirect("admin_profile")
+
+        elif form_type == "password_change":
+            # Handle password change
+            form = PasswordChangeForm(request.user, request.POST)
+            if form.is_valid():
+                user = form.save()
+                # Keep the user logged in after password change
+                update_session_auth_hash(request, user)
+                messages.success(request, "Password updated successfully ✅")
+            else:
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        messages.error(request, f"Password error: {error}")
+
+            return redirect("admin_profile")
+
+    # For GET requests, just render the profile page
+    return render(request, "custom_admin/admin_profile.html")
+
+
