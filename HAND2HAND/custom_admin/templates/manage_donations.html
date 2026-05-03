@@ -1,0 +1,39 @@
+{% extends "custom_admin/base_admin.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Manage Donations</h2>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Donor</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for donation in new_donations %}
+                <tr>
+                    <td>{{ donation.title }}</td>
+                    <td>{{ donation.donor.username }}</td>
+                    <td>{{ donation.category.name }}</td>
+                    <td><span class="badge {{ donation.status }}">{{ donation.status }}</span></td>
+                    <td>{{ donation.created_at|date:"M d, Y" }}</td>
+                    <td>
+                        <a href="#" class="btn btn-sm btn-info">View</a>
+                        <a href="{% url 'delete_donation_admin' donation.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
