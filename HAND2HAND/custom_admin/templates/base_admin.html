@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donature Admin Panel</title>
+    <link rel="stylesheet" href="{% static 'custom_admin/css/base_admin.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <div class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-shield-alt"></i> Admin Panel</h2>
+            </div>
+            
+            <div class="sidebar-menu">
+                <a href="{% url 'admin_dashboard' %}" class="menu-item {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}
+">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                
+                <div class="menu-section">User Management</div>
+                <a href="{% url 'manage_users' %}" class="menu-item">
+                    <i class="fas fa-users"></i> All Users
+                </a>
+                <a href="{% url 'manage_ngos' %}" class="menu-item">
+                    <i class="fas fa-hand-holding-heart"></i> NGOs
+                </a>
+                <a href="{% url 'manage_admins' %}" class="menu-item">
+                    <i class="fas fa-user-shield"></i> Admins
+                </a>
+
+                <div class="menu-section">Content Management</div>
+                <a href="{% url 'manage_donations' %}" class="menu-item">
+                    <i class="fas fa-donate"></i> Donations
+                </a>
+                <a href="{% url 'manage_donation_claims' %}" class="menu-item">
+                    <i class="fas fa-handshake"></i> Donation Claims
+                </a>
+                <a href="{% url 'manage_campaigns' %}" class="menu-item">
+                    <i class="fas fa-bullhorn"></i> Campaigns
+                </a>
+                <a href="{% url 'manage_campaign_categories' %}" class="menu-item">
+    <i class="fas fa-list-alt"></i> Campaign Categories
+</a>
+<a href="{% url 'manage_categories' %}" class="menu-item">
+    <i class="fas fa-tags"></i> Donation Categories
+</a>
+                <a href="{% url 'manage_reviews' %}" class="menu-item">
+                    <i class="fas fa-star"></i> Reviews
+                </a>
+                <a href="{% url 'contact_messages' %}" class="menu-item">
+    <i class="fas fa-envelope"></i> Contact Messages
+</a>
+<a href="{% url 'manage_rewards' %}" class="menu-item">
+    <i class="fas fa-gift"></i> Rewards
+</a>
+
+
+                <div class="menu-section">Approval Queue</div>
+                <a href="{% url 'ngo_approval_list' %}" class="menu-item">
+                    <i class="fas fa-user-check"></i> NGO Approvals
+                    {% if pending_ngos_count > 0 %}
+                    <span class="badge">{{ pending_ngos_count }}</span>
+                    {% endif %}
+                </a>
+                <a href="{% url 'campaign_approval_list' %}" class="menu-item">
+                    <i class="fas fa-clipboard-check"></i> Campaign Approvals
+                    {% if pending_campaigns_count > 0 %}
+                    <span class="badge">{{ pending_campaigns_count }}</span>
+                    {% endif %}
+                </a>
+                <a href="{% url 'donation_request_approval_list' %}" class="menu-item">
+                    <i class="fas fa-hand-holding-usd"></i> Request Approvals
+                    {% if pending_requests_count > 0 %}
+                    <span class="badge">{{ pending_requests_count }}</span>
+                    {% endif %}
+                </a>
+
+                <div class="menu-section">System</div>
+                 <!--<a href="{% url 'admin_profile' %}" class="menu-item">
+                    <i class="fas fa-user-cog"></i> My Profile
+                </a>-->
+                <a href="{% url 'system_stats' %}" class="menu-item">
+                    <i class="fas fa-chart-line"></i> Statistics
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="admin-content">
+            <!-- Topbar -->
+            <div class="admin-topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h3>Donature Admin Panel</h3>
+                </div>
+                
+                <div class="topbar-right">
+                    <div class="admin-profile-menu">
+                        <div class="profile-info">
+                            <div class="profile-avatar">
+                                {{ request.user.username|first|upper }}
+                            </div>
+                            <div>
+                                <div class="profile-name">{{ request.user.username }}</div>
+                                <div class="profile-role">Administrator</div>
+                            </div>
+                        </div>
+                        <div class="profile-dropdown">
+                            <div class="profile-dropdown-header">
+                                <div class="profile-name">{{ request.user.username }}</div>
+                                <div class="profile-role">System Administrator</div>
+                            </div>
+                            <div class="profile-dropdown-divider"></div>
+                            <a href="{% url 'admin_profile' %}" class="profile-dropdown-item">
+                                <i class="fas fa-user-cog"></i> My Profile
+                            </a>
+                            <a href="#" class="profile-dropdown-item">
+                                <i class="fas fa-cog"></i> Settings
+                            </a>
+                            <div class="profile-dropdown-divider"></div>
+                            <a href="{% url 'logout' %}" class="profile-dropdown-item">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <main class="main-content">
+                {% if request.user.is_authenticated and request.user.user_type == 'admin' %}
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="alert {{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endif %}
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle
+        document.addEventListener('DOMContentLoaded', function () {
+    const profileMenu = document.querySelector('.admin-profile-menu');
+    const dropdown    = document.querySelector('.profile-dropdown');
+
+    if (!profileMenu || !dropdown) return;
+
+    // Toggle on click
+    profileMenu.addEventListener('click', function (e) {
+        e.stopPropagation();
+        dropdown.classList.toggle('show');
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', function (e) {
+        if (!profileMenu.contains(e.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') dropdown.classList.remove('show');
+    });
+});
+    </script>
+</body>
+</html>
