@@ -321,3 +321,29 @@ def reject_donation_request(request, request_id):
     messages.success(request, f'Donation request "{donation_request.title}" has been rejected!')
     return redirect('donation_request_approval_list')
 
+
+@login_required
+@admin_only
+def update_claim_status(request, claim_id):
+    claim = get_object_or_404(DonationClaim, id=claim_id)
+
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        if new_status in dict(DonationClaim.STATUS_CHOICES).keys():
+            claim.status = new_status
+            claim.save()
+
+            # Create notification for claimant
+            status_display = dict(DonationClaim.STATUS_CHOICES)[new_status]
+            Notification.objects.create(
+                user=claim.claimant,
+                message=f"Your claim for '{claim.donation_item.title}' has been {status_display.lower()}.",
+                link=f"/donation/{claim.donation_item.id}/"
+            )
+
+            messages.success(request, f'Claim status updated to {status_display}!')
+        else:
+            messages.error(request, 'Invalid status!')
+
+    return redirect('manage_donation_claims')
+
