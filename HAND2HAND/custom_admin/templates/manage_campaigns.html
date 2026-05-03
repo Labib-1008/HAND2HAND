@@ -1,0 +1,58 @@
+{% extends "custom_admin/base_admin.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-bullhorn"></i> Manage Campaigns</h2>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if campaigns %}
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>NGO</th>
+                        <th>Status</th>
+                        <th>Goal Amount</th>
+                        <th>Raised</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for campaign in campaigns %}
+                    <tr>
+                        <td>{{ campaign.title }}</td>
+                        <td>
+    {% if campaign.ngo.ngoprofile and campaign.ngo.ngoprofile.ngo_name %}
+        {{ campaign.ngo.ngoprofile.ngo_name }}
+    {% else %}
+        {{ campaign.ngo.username }}
+    {% endif %}
+</td>
+
+                        <td>
+                            <span class="status-badge {{ campaign.status }}">
+                                {{ campaign.status }}
+                            </span>
+                        </td>
+                        <td>৳{{ campaign.goal_amount }}</td>
+                        <td>৳{{ campaign.collected_amount }}</td>
+                        <td>{{ campaign.created_at|date:"M d, Y" }}</td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-info">View</a>
+                            <a href="{% url 'delete_campaign' campaign.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted">No campaigns found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
