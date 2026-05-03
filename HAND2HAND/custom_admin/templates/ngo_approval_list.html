@@ -1,0 +1,29 @@
+{% extends "custom_admin/base_admin.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'custom_admin/css/ngo_approval_list.css' %}">
+
+<div class="approval-container">
+    <h2>📋 NGO Approval Queue</h2>
+    
+    {% if pending_ngos %}
+    <div class="approval-list">
+        {% for ngo in pending_ngos %}
+        <div class="approval-item">
+            <h3>{{ ngo.username }}</h3>
+            <p>Email: {{ ngo.email }}</p>
+            <p>Registered: {{ ngo.date_joined|date:"M d, Y" }}</p>
+            
+            <div class="approval-actions">
+                <a href="{% url 'approve_ngo' ngo.id %}" class="btn-approve">✅ Approve</a>
+                <a href="{% url 'reject_ngo' ngo.id %}" class="btn-reject">❌ Reject</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="no-pending">No pending NGO approvals! 🎉</p>
+    {% endif %}
+</div>
+{% endblock %}

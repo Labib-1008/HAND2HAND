@@ -1,0 +1,79 @@
+{% extends "custom_admin/base_admin.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-chart-line"></i> System Statistics</h2>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-donate"></i>
+        </div>
+        <div class="stat-info">
+            <h3>Donations Today</h3>
+            <p class="stat-number">{{ donations_today }}</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-donate"></i>
+        </div>
+        <div class="stat-info">
+            <h3>Donations This Week</h3>
+            <p class="stat-number">{{ donations_week }}</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-donate"></i>
+        </div>
+        <div class="stat-info">
+            <h3>Donations This Month</h3>
+            <p class="stat-number">{{ donations_month }}</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-info">
+            <h3>New Users Today</h3>
+            <p class="stat-number">{{ new_users_today }}</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-info">
+            <h3>New Users This Week</h3>
+            <p class="stat-number">{{ new_users_week }}</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-handshake"></i>
+        </div>
+        <div class="stat-info">
+            <h3>Claims Today</h3>
+            <p class="stat-number">{{ claims_today }}</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-info">
+            <h3>Completed Claims</h3>
+            <p class="stat-number">{{ completed_claims }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
