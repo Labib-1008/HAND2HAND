@@ -1,0 +1,77 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'ngos/css/my_campaigns.css' %}">
+
+<div class="campaigns-container">
+    <h1><i class="fas fa-list"></i> My Campaigns</h1>
+
+    {% if campaigns %}
+        <table class="campaigns-table">
+            <thead>
+                <tr>
+                    <th>Thumbnail</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Goal</th>
+                    <th>Status</th>
+                    <th>End Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in campaigns %}
+                <tr>
+                    <!-- Thumbnail -->
+                    <td>
+                        {% if c.image %}
+                            <img src="{{ c.image.url }}" alt="{{ c.title }}">
+                        {% else %}
+                            <img src="{% static 'images/default-campaign.jpg' %}" alt="No Image">
+                        {% endif %}
+                    </td>
+
+                    <!-- Title -->
+                    <td>{{ c.title }}</td>
+
+                    <!-- Category -->
+                    <td>
+                        {% if c.category %}
+                            {{ c.category.name }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+
+                    <!-- Goal -->
+                    <td>{{ c.goal_amount|default:"0" }} TK</td>
+
+                    <!-- Status -->
+                    <td>
+                        <span class="status {{ c.status }}">
+                            {{ c.get_status_display }}
+                        </span>
+                    </td>
+
+                    <!-- End Date -->
+                    <td>{{ c.end_date|date:"M d, Y" }}</td>
+
+                    <!-- Actions -->
+                    <td class="actions">
+                        <a href="{% url 'campaign_detail' c.id %}" class="btn-view">View</a>
+                        <a href="{% url 'edit_campaign' c.id %}" class="btn-edit">Edit</a>
+                        <form method="POST" action="{% url 'delete_campaign' c.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this campaign?');">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="no-campaigns">No campaigns created yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
