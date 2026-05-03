@@ -1,0 +1,100 @@
+{% extends "custom_admin/base_admin.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'custom_admin/css/manage_rewards.css' %}">
+
+<div class="page-header">
+    <h2>Manage Reward Thresholds</h2>
+    <button type="button" class="btn btn-success" id="addRewardBtn">Add Reward</button>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <!-- Existing Rewards Form -->
+        <form method="POST" id="updateRewardsForm">
+            {% csrf_token %}
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Reward</th>
+                        <th>Points Required</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reward in rewards %}
+                    <tr>
+                        <td>{{ reward.name }}</td>
+                        <td>
+                            <div class="input-reward-wrapper">
+                                <input type="number"
+                                       name="points_{{ reward.id }}"
+                                       value="{{ reward.points_required }}"
+                                       min="0"
+                                       class="reward-input">
+                                <div class="reward-buttons">
+                                    <button type="button" class="btn-up">&#9650;</button>
+                                    <button type="button" class="btn-down">&#9660;</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2">No rewards found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <br>
+            <button type="submit" class="btn btn-primary">Update Thresholds</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal for Adding Reward -->
+<div id="addRewardModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>Add New Reward</h3>
+        <form method="POST" id="addRewardForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="reward_name">Reward Name</label>
+                <select id="reward_name" name="reward_name" class="form-control">
+                    <option value="Silver">Silver</option>
+                    <option value="Gold">Gold</option>
+                    <option value="Diamond">Diamond</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="points_required">Points Required</label>
+                <input type="number" id="points_required" name="points_required" min="0" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Add Reward</button>
+        </form>
+    </div>
+</div>
+
+<script>
+// ================== Up/Down Buttons for existing inputs ==================
+document.querySelectorAll('.input-reward-wrapper').forEach(wrapper => {
+    const input = wrapper.querySelector('.reward-input');
+    const btnUp = wrapper.querySelector('.btn-up');
+    const btnDown = wrapper.querySelector('.btn-down');
+
+    btnUp.addEventListener('click', () => input.stepUp());
+    btnDown.addEventListener('click', () => input.stepDown());
+});
+
+// ================== Modal Handling ==================
+const modal = document.getElementById("addRewardModal");
+const btn = document.getElementById("addRewardBtn");
+const span = modal.querySelector(".close");
+
+btn.onclick = () => modal.style.display = "block";
+span.onclick = () => modal.style.display = "none";
+window.onclick = (event) => { if(event.target == modal) modal.style.display = "none"; }
+</script>
+
+{% endblock %}

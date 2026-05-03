@@ -1,0 +1,41 @@
+{% extends "custom_admin/base_admin.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Manage NGOs</h2>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Organization</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Registered</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ngo in ngos %}
+                <tr>
+                    <td>{{ ngo.username }}</td>
+                    <td>{{ ngo.email }}</td>
+                    <td>
+                        <span class="badge {% if ngo.is_approved %}success{% else %}warning{% endif %}">
+                            {{ ngo.is_approved|yesno:"Approved,Pending" }}
+                        </span>
+                    </td>
+                    <td>{{ ngo.date_joined|date:"M d, Y" }}</td>
+                    <td>
+                        <a href="#" class="btn btn-sm btn-info">View</a>
+                        <a href="{% url 'delete_user' ngo.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
