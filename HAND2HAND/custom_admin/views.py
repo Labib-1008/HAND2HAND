@@ -188,3 +188,136 @@ def admin_profile(request):
     return render(request, "custom_admin/admin_profile.html")
 
 
+# ===== APPROVAL SYSTEM VIEWS =====
+
+@login_required
+@admin_only
+def ngo_approval_list(request):
+    pending_ngos = User.objects.filter(user_type='ngo', is_approved=False)
+    return render(request, 'custom_admin/ngo_approval_list.html', {
+        'pending_ngos': pending_ngos
+    })
+
+
+@login_required
+@admin_only
+def approve_ngo(request, user_id):
+    ngo_user = get_object_or_404(User, id=user_id, user_type='ngo')
+    ngo_user.is_approved = True
+    ngo_user.save()
+
+    # Create notification for NGO
+    Notification.objects.create(
+        user=ngo_user,
+        message="Your NGO account has been approved! You can now access all features.",
+        link="/profile/"
+    )
+
+    messages.success(request, f'NGO {ngo_user.username} has been approved!')
+    return redirect('ngo_approval_list')
+
+
+@login_required
+@admin_only
+def reject_ngo(request, user_id):
+    ngo_user = get_object_or_404(User, id=user_id, user_type='ngo')
+    ngo_user.delete()
+    messages.success(request, f'NGO {ngo_user.username} has been rejected and removed!')
+    return redirect('ngo_approval_list')
+
+
+@login_required
+@admin_only
+def campaign_approval_list(request):
+    pending_campaigns = Campaign.objects.filter(status='pending')
+    return render(request, 'custom_admin/campaign_approval_list.html', {
+        'pending_campaigns': pending_campaigns
+    })
+
+
+@login_required
+@admin_only
+def approve_campaign(request, campaign_id):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    campaign.status = 'approved'
+    campaign.approved_at = timezone.now()
+    campaign.save()
+
+    # Create notification for NGO
+    Notification.objects.create(
+        user=campaign.ngo,
+        message=f"Your campaign '{campaign.title}' has been approved!",
+        link=f"/campaigns/{campaign.id}/"
+    )
+
+    messages.success(request, f'Campaign "{campaign.title}" has been approved!')
+    return redirect('campaign_approval_list')
+
+
+@login_required
+@admin_only
+def reject_campaign(request, campaign_id):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    campaign.status = 'rejected'
+    campaign.save()
+
+    Notification.objects.create(
+        user=campaign.ngo,
+        message=f"Your campaign '{campaign.title}' has been rejected. Please contact admin for details.",
+        link=reverse('my_campaigns')
+
+    )
+
+    messages.success(request, f'Campaign "{campaign.title}" has been rejected!')
+    return redirect('campaign_approval_list')
+
+
+@login_required
+@admin_only
+def donation_request_approval_list(request):
+    pending_requests = RequestItem.objects.filter(status='pending')
+    return render(request, 'custom_admin/donation_request_approval_list.html', {
+        'pending_requests': pending_requests
+    })
+
+
+@login_required
+@admin_only
+def approve_donation_request(request, request_id):
+    donation_request = get_object_or_404(RequestItem, id=request_id)
+    donation_request.status = 'approved'
+    donation_request.approved_at = timezone.now()
+    donation_request.save()
+
+    # Correct link to request_detail page
+    detail_link = reverse('request_detail', kwargs={'pk': donation_request.pk})
+
+    Notification.objects.create(
+        user=donation_request.requester,
+        message=f"Your donation request '{donation_request.title}' has been approved!",
+        link=detail_link
+    )
+
+    messages.success(request, f'Donation request "{donation_request.title}" has been approved!')
+    return redirect('donation_request_approval_list')
+
+
+@login_required
+@admin_only
+def reject_donation_request(request, request_id):
+    donation_request = get_object_or_404(RequestItem, id=request_id)
+    donation_request.status = 'rejected'
+    donation_request.save()
+
+    # Correct link to my_requests page
+    detail_link = reverse('request_detail', kwargs={'pk': donation_request.pk})
+
+    Notification.objects.create(
+        user=donation_request.requester,
+        message=f"Your donation request '{donation_request.title}' has been rejected. Please contact admin for details.",
+        link=detail_link
+    )
+
+    messages.success(request, f'Donation request "{donation_request.title}" has been rejected!')
+    return redirect('donation_request_approval_list')
+
