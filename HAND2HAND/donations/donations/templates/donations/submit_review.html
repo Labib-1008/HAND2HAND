@@ -1,0 +1,55 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'donations/css/review.css' %}">
+
+<div class="review-form-container">
+    <div class="review-header">
+        <h2>Leave a Review for <span>{{ donation_item.title }}</span></h2>
+        <p class="subtext">Your feedback will help donors and recipients in the future!</p>
+    </div>
+
+    <form method="post" class="review-form">
+        {% csrf_token %}
+
+        <!-- Hidden rating input -->
+        {{ form.rating }}
+
+        <!-- Star rating -->
+        <div class="star-rating">
+            <span data-value="1">★</span>
+            <span data-value="2">★</span>
+            <span data-value="3">★</span>
+            <span data-value="4">★</span>
+            <span data-value="5">★</span>
+        </div>
+
+        <div class="form-group">
+            <label for="id_comment">Your Comment</label>
+            {{ form.comment }}
+        </div>
+
+        <button type="submit" class="btn-submit">✅ Submit Review</button>
+        <a href="{% url 'donation_detail' donation_item.id %}" class="btn-cancel">Cancel</a>
+    </form>
+</div>
+
+<script>
+const stars = document.querySelectorAll(".star-rating span");
+const ratingInput = document.getElementById("id_rating");
+
+stars.forEach((star, index) => {
+    star.addEventListener("click", () => {
+        let value = star.getAttribute("data-value");
+        ratingInput.value = value;
+
+        // Highlight selected stars
+        stars.forEach(s => s.classList.remove("selected"));
+        for (let i = 0; i < value; i++) {
+            stars[i].classList.add("selected");
+        }
+    });
+});
+</script>
+{% endblock %}

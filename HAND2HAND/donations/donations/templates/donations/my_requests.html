@@ -1,0 +1,49 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'donations/css/my_donations.css' %}">
+
+<div class="my-donations-container">
+    <h1>My Requests</h1>
+
+    {% if requests_list %}
+        <div class="donations-list">
+            {% for req in requests_list %}
+            <div class="donation-card request-item {{ req.urgency }}">
+                <div class="card-image">
+                    {% if req.image %}
+                        <img src="{{ req.image.url }}" alt="{{ req.title }}">
+                    {% else %}
+                        <img src="{% static 'images/default-request.jpg' %}" alt="{{ req.title }}">
+                    {% endif %}
+                </div>
+
+                <div class="card-content">
+                    <h3>{{ req.title }}</h3>
+                    <p class="donation-desc">{{ req.description|truncatewords:20 }}</p>
+                    <div class="donation-meta">
+                        <span class="category">{% if req.category %}{{ req.category.name }}{% else %}No Category{% endif %}</span>
+                        <span class="quantity">{{ req.quantity }} items</span>
+                        <span class="urgency">{{ req.get_urgency_display }}</span>
+                        <span class="status">{{ req.get_status_display }}</span>
+                        <span class="date">{{ req.created_at|date:"M d, Y" }}</span>
+                    </div>
+
+                    <div class="card-actions">
+                        <a href="{% url 'request_detail' req.id %}" class="btn-details">View Details</a>
+                        <a href="{% url 'edit_request' req.id %}" class="btn-edit">✏️ Edit</a>
+                        <form action="{% url 'delete_request' req.id %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this request?');">🗑️ Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You have not submitted any requests yet. <a href="{% url 'request_item' %}">Create a Request</a></p>
+    {% endif %}
+</div>
+{% endblock %}

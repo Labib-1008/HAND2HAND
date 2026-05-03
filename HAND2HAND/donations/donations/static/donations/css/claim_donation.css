@@ -1,0 +1,78 @@
+/* Claim Donation Page Styles */
+.claim-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+}
+
+.claim-container h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 25px;
+}
+
+.claim-form .form-group {
+    margin-bottom: 20px;
+}
+
+.claim-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #34495e;
+}
+
+.claim-form input,
+.claim-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.claim-form input:focus,
+.claim-form textarea:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+.claim-form button {
+    background: #e67002;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.claim-form button:hover {
+    background: #c35f02;
+}
+
+#preview {
+    margin-top: 10px;
+    text-align: center;
+}
+
+#preview img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+@media (max-width: 768px) {
+    .claim-container {
+        padding: 15px;
+        margin: 20px;
+    }
+}

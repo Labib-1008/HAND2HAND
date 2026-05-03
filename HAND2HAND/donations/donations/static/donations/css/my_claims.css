@@ -1,0 +1,103 @@
+/* ===== my_claims.css ===== */
+.my-claims-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.my-claims-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+    color: #333;
+}
+
+.claims-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.claim-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.claim-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.card-image img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 15px;
+}
+
+.card-content h3 {
+    margin-top: 0;
+    font-size: 1.2em;
+    color: #222;
+}
+
+.claim-message {
+    margin: 10px 0;
+    font-size: 0.95em;
+    color: #555;
+}
+
+.claim-meta {
+    font-size: 0.85em;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.claim-meta span {
+    display: block;
+    margin-bottom: 3px;
+}
+
+.claim-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.claim-actions a.btn-details,
+.claim-actions a.btn-review {
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 0.85em;
+    color: #fff;
+    background-color: #4CAF50;
+    transition: background 0.2s;
+}
+
+.claim-actions a.btn-review {
+    background-color: #2196F3;
+}
+
+.claim-actions a.btn-details:hover {
+    background-color: #45a049;
+}
+
+.claim-actions a.btn-review:hover {
+    background-color: #0b7dda;
+}
+
+p {
+    color: #333;
+}
+
+a {
+    color: #2196F3;
+}

@@ -1,0 +1,187 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'donations/css/explore_donations.css' %}">
+<div class="browse-container">
+    <div class="browse-header">
+        <h1><i class="fas fa-search"></i> Explore Donations</h1>
+        <p>Find donations that match your needs</p>
+    </div>
+    
+    <div class="browse-content">
+        <!-- Filters Sidebar -->
+        <div class="filters-sidebar">
+            <div class="filter-section">
+                <h3>Search Donations</h3>
+                <form method="GET" action="{% url 'explore_donations' %}">
+                    <div class="search-box">
+                        <input type="text" name="q" placeholder="Search donations..." value="{{ search_query }}">
+                        <button type="submit" class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="filter-section">
+                <h3>Filters</h3>
+                <form method="GET" action="{% url 'explore_donations' %}" id="filter-form">
+                    
+                    <div class="filter-group">
+                        <h4>Category</h4>
+                        <select class="filter-select" name="category">
+                            <option value="">All Categories</option>
+                            {% for category in categories %}
+                            <option value="{{ category.id }}" 
+                                {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>
+                                {{ category.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h4>Location</h4>
+                        <select class="filter-select" name="location">
+                            <option value="">All Locations</option>
+                            {% for location in locations %}
+                            <option value="{{ location }}" 
+                                {% if selected_location == location %}selected{% endif %}>
+                                {{ location }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h4>Urgency</h4>
+                        <select class="filter-select" name="urgency">
+                            <option value="">Any urgency</option>
+                            <option value="high" {% if selected_urgency == 'high' %}selected{% endif %}>High</option>
+                            <option value="medium" {% if selected_urgency == 'medium' %}selected{% endif %}>Medium</option>
+                            <option value="low" {% if selected_urgency == 'low' %}selected{% endif %}>Low</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-actions">
+                        <button type="submit" class="apply-filters-btn">Apply Filters</button>
+                        <a href="{% url 'explore_donations' %}" class="reset-filters-btn">Reset</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+      <div class="donations-list-wrapper">
+           <div class="results-header">
+                <h2>Available Donations</h2>
+                <span class="results-count">{{ donations.paginator.count }} donations found</span>
+            </div>
+        
+        <!-- Donations Listing -->
+        <div class="donations-list">
+            
+            
+            {% if donations %}
+            <!-- Donation Cards - Dynamically generated -->
+            {% for donation in donations %}
+            <div class="donation-card">
+                <div class="card-image">
+                    {% if donation.images.first %}
+                    <img src="{{ donation.images.first.image.url }}" alt="{{ donation.title }}">
+                    {% else %}
+                    <img src="{% static 'images/default-donation.jpg' %}" alt="{{ donation.title }}">
+                    {% endif %}
+                    
+                    {% if donation.urgency == 'high' %}
+                    <span class="urgent-tag">URGENT</span>
+                    {% endif %}
+                </div>
+                
+                <div class="card-content">
+                    <h3>{{ donation.title }}</h3>
+                    <p class="donation-desc">{{ donation.description|truncatewords:20 }}</p>
+                    
+                    <div class="donation-meta">
+                        <span class="category-tag">{{ donation.category.name }}</span>
+                        <span class="location"><i class="fas fa-map-marker-alt"></i> {{ donation.location }}</span>
+                        <span class="quantity"><i class="fas fa-cube"></i> {{ donation.quantity }} items</span>
+                        <span class="date"><i class="fas fa-clock"></i> {{ donation.created_at|timesince }} ago</span>
+                    </div>
+                    
+                    <div class="card-actions">
+                        <a href="{% url 'donation_detail' donation.id %}" class="btn-details">View Details</a>
+                        
+                        {% if user.is_authenticated and user.user_type != 'donor' %}
+                        <form action="{% url 'claim_donation' donation.id %}" method="POST" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-claim">
+                                Claim Donation
+                            </button>
+                        </form>
+                        {% elif not user.is_authenticated %}
+                        <a href="#" onclick="openModal('loginModal')" class="btn-claim">Login to Claim</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+            <!-- Pagination -->
+            {% if donations.has_other_pages %}
+            <div class="pagination">
+                {% if donations.has_previous %}
+                <a href="?page={{ donations.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+                   class="page-btn">
+                    <i class="fas fa-chevron-left"></i> Previous
+                </a>
+                {% endif %}
+                
+                {% for num in donations.paginator.page_range %}
+                {% if donations.number == num %}
+                <span class="page-btn active">{{ num }}</span>
+                {% else %}
+                <a href="?page={{ num }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+                   class="page-btn">{{ num }}</a>
+                {% endif %}
+                {% endfor %}
+                
+                {% if donations.has_next %}
+                <a href="?page={{ donations.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+                   class="page-btn">
+                    Next <i class="fas fa-chevron-right"></i>
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+            
+            {% else %}
+            <div class="no-results">
+                <i class="fas fa-search fa-3x"></i>
+                <h3>No donations found</h3>
+                <p>Try adjusting your filters or check back later for new donations.</p>
+                {% if user.is_authenticated and user.user_type == 'donor' %}
+                <a href="{% url 'create_donation' %}" class="btn-primary">Be the first to donate!</a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+    
+     </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-submit form when filters change
+    const filterForm = document.getElementById('filter-form');
+    const filterInputs = filterForm.querySelectorAll('select');
+    
+    filterInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            filterForm.submit();
+        });
+    });
+});
+</script>
+{% endblock %}

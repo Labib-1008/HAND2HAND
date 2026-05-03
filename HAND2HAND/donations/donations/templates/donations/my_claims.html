@@ -1,0 +1,48 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'donations/css/my_claims.css' %}">
+
+<div class="my-claims-container">
+    <h1>My Claims</h1>
+
+    {% if claims %}
+        <div class="claims-list">
+            {% for claim in claims %}
+            <div class="claim-card">
+                <div class="card-image">
+                    {% if claim.donation_item.images.first %}
+                        <img src="{{ claim.donation_item.images.first.image.url }}" alt="{{ claim.donation_item.title }}">
+                    {% else %}
+                        <img src="{% static 'images/default-donation.jpg' %}" alt="{{ claim.donation_item.title }}">
+                    {% endif %}
+                </div>
+
+                <div class="card-content">
+                    <h3>{{ claim.donation_item.title }}</h3>
+                    <p class="claim-message">{{ claim.message|truncatewords:20 }}</p>
+                    <div class="claim-meta">
+                        <span><strong>Status:</strong> {{ claim.get_status_display }}</span>
+                        <span><strong>Claimed On:</strong> {{ claim.created_at|date:"M d, Y H:i" }}</span>
+                        {% if claim.preferred_date %}
+                        <span><strong>Preferred Date:</strong> {{ claim.preferred_date|date:"M d, Y H:i" }}</span>
+                        {% endif %}
+                        <span><strong>Contact:</strong> {{ claim.contact_number }}</span>
+                    </div>
+
+                    <div class="claim-actions">
+                        <a href="{% url 'donation_detail' claim.donation_item.id %}" class="btn-details">View Donation</a>
+                        {% if claim.status == 'approved' and claim.can_review %}
+                        <a href="{% url 'submit_review' claim.id %}" class="btn-review">Submit Review</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You haven’t claimed any donations yet. <a href="{% url 'explore_donations' %}">Explore Donations</a></p>
+    {% endif %}
+</div>
+{% endblock %}

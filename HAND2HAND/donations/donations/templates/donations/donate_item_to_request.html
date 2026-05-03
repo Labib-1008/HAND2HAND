@@ -1,0 +1,25 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'donations/css/donate_item_to_requests.css' %}">
+
+<div class="donate-form-container">
+    <div class="donate-card">
+        <h2>Donate to Request</h2>
+        <h3>{{ request_item.title }}</h3>
+        <p><strong>Requested by:</strong> {{ request_item.requester.username }}</p>
+        <p><strong>Quantity needed:</strong> {{ request_item.quantity }}</p>
+        <p><strong>Urgency:</strong> {{ request_item.get_urgency_display }}</p>
+        <p><strong>Delivery Location:</strong> {{ request_item.delivery_location|default:"Not specified" }}</p>
+
+        <form method="post" enctype="multipart/form-data" class="donate-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-donate">Donate</button>
+            <a href="{% url 'donate_to_requests' %}" class="btn btn-back">Back</a>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

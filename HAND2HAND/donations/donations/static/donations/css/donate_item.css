@@ -1,0 +1,172 @@
+/* ================= Donate Item Page - Theme Matched ================= */
+.donate-container {
+    max-width: 550px;
+    margin: 20px auto;
+    background: #fff; /* main content bg */
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.donate-header {
+    background: transparent; /* theme matched, no gradient */
+    padding: 15px 0;
+    text-align: center;
+    font-weight: 600;
+    font-size: 20px;
+    border-bottom: 1px solid #f3d1b8;
+}
+
+.donate-form {
+    padding: 20px;
+}
+
+.form-section {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.form-section:last-child {
+    border-bottom: none;
+}
+
+.form-section h2 {
+    font-size: 16px;
+    font-weight: 500;
+    color: #ff6b35; /* brighter orange */
+    margin-bottom: 12px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 500;
+    color: #222;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #ff8c42; /* main site accent */
+    box-shadow: 0 0 5px rgba(255, 140, 66, 0.3);
+}
+
+input[type="file"] {
+    padding: 10px;
+    border: 2px dashed #ddd;
+    border-radius: 6px;
+    background: #fafafa;
+    cursor: pointer;
+}
+
+input[type="file"]:hover {
+    border-color: #ff8c42;
+    background: #fff7f2;
+}
+
+/* Preview image */
+#preview {
+    margin-top: 8px;
+}
+#preview img {
+    display: block;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: transform 0.2s;
+}
+#preview img:hover {
+    transform: scale(1.05);
+}
+
+/* Checkbox */
+.form-check {
+    display: flex;
+    align-items: center;
+    margin-top: 12px;
+}
+.form-check input {
+    margin-right: 6px;
+}
+
+/* Buttons */
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-cancel {
+    background-color: #f5f5f5;
+    color: #555;
+}
+.btn-cancel:hover {
+    background-color: #e5e5e5;
+}
+
+.btn-confirm {
+    background-color: #ff6b35; /* brighter orange */
+    color: white;
+}
+.btn-confirm:hover {
+    background-color: #e65b2a; /* slightly darker orange for hover */
+}
+
+/* Form row */
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .donate-container {
+        margin: 15px;
+        border-radius: 8px;
+    }
+    .form-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .form-buttons {
+        flex-direction: column;
+    }
+    .btn {
+        width: 100%;
+    }
+    #preview img {
+        width: 80px;
+        height: 80px;
+    }
+}

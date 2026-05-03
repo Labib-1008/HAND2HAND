@@ -1,0 +1,85 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'donations/css/donate_item.css' %}">
+
+<div class="donate-container">
+    <h1>Edit Donation</h1>
+
+    <form method="POST" enctype="multipart/form-data" class="donate-form">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <!-- Upload Image -->
+        <section class="form-section">
+            <h2>Upload Image</h2>
+            <div class="form-group">
+                {{ form.image.label_tag }}
+                <input type="file" name="image" id="id_image" accept="image/*" class="form-control">
+                {% if form.image.errors %}{{ form.image.errors }}{% endif %}
+
+                <div id="preview" style="margin-top:10px;">
+                    {% if existing_image %}
+                        <img id="preview-img" src="{{ existing_image.image.url }}" 
+                             style="width:100px; height:100px; object-fit:cover; border:1px solid #ccc; border-radius:4px;">
+                    {% else %}
+                        <img id="preview-img" style="display:none; width:100px; height:100px; object-fit:cover; border:1px solid #ccc; border-radius:4px;">
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Other form fields -->
+        <section class="form-section">
+            <h2>Item Details</h2>
+            <div class="form-group">{{ form.title.label_tag }}{{ form.title }}{{ form.title.errors }}</div>
+            <div class="form-row">
+                <div class="form-group col-md-6">{{ form.category.label_tag }}{{ form.category }}{{ form.category.errors }}</div>
+                <div class="form-group col-md-6">{{ form.quantity.label_tag }}{{ form.quantity }}{{ form.quantity.errors }}</div>
+            </div>
+        </section>
+
+        <section class="form-section">
+            <h2>Description & Location</h2>
+            <div class="form-group">{{ form.description.label_tag }}{{ form.description }}{{ form.description.errors }}</div>
+            <div class="form-group">{{ form.location.label_tag }}{{ form.location }}{{ form.location.errors }}</div>
+        </section>
+
+        <section class="form-section">
+            <h2>Urgency Level</h2>
+            <div class="form-group">{{ form.urgency.label_tag }}{{ form.urgency }}{{ form.urgency.errors }}</div>
+        </section>
+
+        <div class="form-check">{{ form.notify_immediately }}{{ form.notify_immediately.label_tag }}</div>
+
+        <div class="form-buttons" style="margin-top:15px;">
+            <button type="submit" class="btn btn-confirm">Update Donation</button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('id_image');
+    const previewImg = document.getElementById('preview-img');
+
+    if(fileInput){
+        fileInput.addEventListener('change', function(){
+            const file = this.files[0];
+            if(file && file.type.startsWith('image/')){
+                const reader = new FileReader();
+                reader.onload = function(e){
+                    previewImg.src = e.target.result;
+                    previewImg.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                previewImg.src = '';
+                previewImg.style.display = 'none';
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

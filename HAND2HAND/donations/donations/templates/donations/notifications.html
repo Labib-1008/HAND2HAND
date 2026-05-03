@@ -1,0 +1,23 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'donations/css/notifications.css' %}">
+
+<div class="notifications-page-container">
+    <h1>Notifications</h1>
+
+    {% if notifications %}
+        <div class="notifications-list">
+            {% for note in notifications %}
+                <a href="{{ note.link|default:'#' }}" class="notification-item {% if not note.is_read %}unread{% endif %}">
+                    <p class="message">{{ note.message }}</p>
+                    <span class="notification-time">{{ note.created_at|timesince }} ago</span>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-notifications">No notifications found.</p>
+    {% endif %}
+</div>
+{% endblock %}

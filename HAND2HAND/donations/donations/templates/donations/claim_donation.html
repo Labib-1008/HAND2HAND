@@ -1,0 +1,41 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'donations/css/claim_donation.css' %}">
+
+<div class="claim-container">
+    <div class="claim-header">
+        <h1>Claim Donation: {{ donation_item.title }}</h1>
+    </div>
+
+    <form method="POST" class="claim-form">
+        {% csrf_token %}
+
+        <!-- Show Django messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="{% if message.tags == 'success' %}success-message{% else %}error-message{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {{ form.non_field_errors }}
+
+        <label for="id_message">Message</label>
+        {{ form.message }}
+        {{ form.message.errors }}
+
+        <label for="id_preferred_date">Preferred Date</label>
+        {{ form.preferred_date }}
+        {{ form.preferred_date.errors }}
+
+        <label for="id_contact_number">Contact Number</label>
+        {{ form.contact_number }}
+        {{ form.contact_number.errors }}
+
+        <button type="submit" class="btn-submit">Submit Claim</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,78 @@
+/* donations/static/donations/css/contact.css */
+.contact-container {
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 30px;
+    background: #fffaf7;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.contact-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.contact-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-input, .form-textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
+.btn-submit {
+    background-color: #ffdcb6;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: #ffc29b;
+}
+
+.contact-info {
+    margin-top: 30px;
+    background: #fff3e6;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+
+
+
+.social-icons {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.social-icons a {
+    font-size: 30px;
+    color: #333;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.social-icons a:hover {
+    color: #ff9f43;  /* Highlight color */
+    transform: scale(1.2);
+}
+
+
+.map-container {
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+

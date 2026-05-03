@@ -1,0 +1,123 @@
+/* ===== Notifications Page Container ===== */
+.notifications-page-container {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #fff8f0;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.notifications-page-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #d95a0d;
+}
+
+/* ===== Notifications List ===== */
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ===== Single Notification Item ===== */
+.notification-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  background: #fff;
+  border-radius: 6px;
+  border-left: 4px solid transparent;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  text-decoration: none;
+  color: #333;
+  transition: all 0.2s ease-in-out;
+}
+
+.notification-item:hover {
+  background: #ffe0b8;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.notification-item.unread {
+  border-left-color: #d95a0d;
+  font-weight: 600;
+}
+
+/* ===== Notification Message & Time ===== */
+.notification-item .message {
+  flex: 1;
+  margin: 0;
+}
+
+.notification-item .notification-time {
+  font-size: 12px;
+  color: #777;
+  margin-left: 10px;
+  white-space: nowrap;
+}
+
+/* ===== No Notifications ===== */
+.no-notifications {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  padding: 15px;
+}
+
+/* ===== View All Link ===== */
+.view-all {
+  display: block;
+  margin-top: 15px;
+  padding: 10px;
+  text-align: center;
+  background: #d95a0d;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.view-all:hover {
+  background: #b54b0a;
+}
+
+/* ===== Optional: Notification Dropdown (if same CSS reused) ===== */
+.notification-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.notification-dropdown .notification-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff8f0;
+  min-width: 200px;
+  max-height: 250px;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  border-radius: 6px;
+  border: 1px solid #f4cbb7;
+  padding: 5px 0;
+  z-index: 999;
+}
+
+.notification-dropdown:hover .notification-content {
+  display: block;
+}
+
+.notification-dropdown .notification-content a.notification-item {
+  padding: 8px 12px;
+  display: block;
+  border-bottom: 1px solid #f4cbb7;
+}
+
+.notification-dropdown .notification-content a.notification-item:last-child {
+  border-bottom: none;
+}

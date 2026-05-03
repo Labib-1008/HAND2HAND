@@ -1,0 +1,356 @@
+/* Compact Profile Styles */
+.compact-profile-container {
+    max-width: 900px;
+    margin: 1rem auto;
+    padding: 1rem;
+    background: #fffaf7;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border: 2px solid #f4cbb7;
+}
+
+.profile-header-compact {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #ffdcb6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.profile-header-compact h2 {
+    color: #d95a0d;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.profile-type-badge {
+    padding: 0.3rem 0.8rem;
+    background: #ffdcb6;
+    color: #333;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid #f4cbb7;
+}
+
+/* Compact Layout */
+.compact-layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Left Side */
+.compact-left {
+    background: #ffdcb6;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 2px solid #f4cbb7;
+    text-align: center;
+}
+
+.profile-photo-compact {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #d95a0d;
+    background: #fff;
+}
+
+.profile-photo-compact img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.default-avatar-sm {
+    width: 100%;
+    height: 100%;
+    background: #d95a0d;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.photo-upload-form {
+    margin-bottom: 1rem;
+}
+
+.change-photo-btn-sm {
+    padding: 0.5rem 1rem;
+    background: #d95a0d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.change-photo-btn-sm:hover {
+    background: #b9480a;
+}
+
+.quick-actions-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.action-btn-sm {
+    padding: 0.5rem;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+}
+
+.action-btn-sm:hover {
+    background: #219a52;
+}
+
+/* Right Side */
+.compact-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.info-card {
+    background: #fff;
+    padding: 1.2rem;
+    border-radius: 10px;
+    border: 2px solid #f4cbb7;
+}
+
+.card-title {
+    margin: 0 0 1rem 0;
+    color: #333;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #ffdcb6;
+}
+
+/* Compact Forms */
+.compact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-grid-compact {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.8rem;
+}
+
+.form-group-sm {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group-sm.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group-sm label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.3rem;
+    font-size: 0.8rem;
+}
+
+.compact-input {
+    padding: 0.6rem;
+    border: 2px solid #ffdcb6;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    background: #fffaf7;
+    transition: border-color 0.3s ease;
+}
+
+.compact-input:focus {
+    outline: none;
+    border-color: #d95a0d;
+}
+
+.compact-input:disabled {
+    background: #f8f9fa;
+    color: #7f8c8d;
+    border-color: #ddd;
+}
+
+/* Buttons */
+.save-btn-sm,
+.change-password-btn-sm {
+    padding: 0.7rem 1.5rem;
+    background: #d95a0d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    align-self: flex-start;
+}
+
+.change-password-btn-sm {
+    background: #27ae60;
+}
+
+.save-btn-sm:hover {
+    background: #b9480a;
+}
+
+.change-password-btn-sm:hover {
+    background: #219a52;
+}
+
+/* Documents */
+.documents-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.doc-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem;
+    background: #fffaf7;
+    border-radius: 6px;
+    border: 1px solid #ffdcb6;
+}
+
+.doc-label {
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.doc-btn {
+    padding: 0.4rem 0.8rem;
+    background: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.doc-btn:hover {
+    background: #2980b9;
+}
+
+/* Quick Links Footer */
+.quick-links-footer {
+    background: #ffdcb6;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 2px solid #f4cbb7;
+}
+
+.action-buttons-compact {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.8rem;
+}
+
+.action-btn-compact {
+    padding: 0.7rem;
+    background: #d95a0d;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.action-btn-compact:hover {
+    background: #b9480a;
+    transform: translateY(-1px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .compact-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .compact-profile-container {
+        margin: 0.5rem;
+        padding: 0.8rem;
+    }
+    
+    .form-grid-compact {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons-compact {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+    
+    .compact-left,
+    .info-card {
+        padding: 1rem;
+    }
+    
+    .profile-header-compact {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .profile-header-compact h2 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .compact-profile-container {
+        margin: 0.3rem;
+        padding: 0.5rem;
+    }
+    
+    .profile-photo-compact {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .default-avatar-sm {
+        font-size: 2rem;
+    }
+    
+    .action-buttons-compact {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-title {
+        font-size: 1rem;
+    }
+    
+    .compact-input {
+        font-size: 0.8rem;
+    }
+}

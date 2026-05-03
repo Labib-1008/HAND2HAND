@@ -1,0 +1,63 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'donations/css/my_rewards.css' %}">
+
+<div class="rewards-container">
+    <h1>My Rewards</h1>
+    
+    <div class="points-section">
+        <h2>Total Points: {{ user_reward.points }}</h2>
+    </div>
+
+    <div class="earned-rewards">
+        <h3>Earned Rewards</h3>
+        {% if user_reward.rewards.all %}
+        <div class="reward-list">
+            {% for reward in user_reward.rewards.all %}
+    <span class="reward-badge">
+        {% if reward.name == "Silver" %}🥈{% elif reward.name == "Gold" %}🥇{% elif reward.name == "Diamond" %}💎{% endif %}
+        {{ reward.name }}
+    </span>
+{% endfor %}
+
+
+        </div>
+        {% else %}
+        <p class="no-rewards">No rewards yet. Keep donating!</p>
+        {% endif %}
+    </div>
+
+    <div class="next-reward-section">
+        {% if next_reward %}
+        <h3>Next Reward: {{ next_reward.name }} ({{ next_reward.points_required }} points)</h3>
+        <div class="progress-bar" data-progress="{{ progress|default:0 }}">
+            <div class="progress" id="progress-bar"></div>
+        </div>
+        <p id="progress-text">{{ progress|default:0 }}% towards next reward</p>
+        {% else %}
+        <h3>Congratulations! You earned all rewards 🎉</h3>
+        <div class="progress-bar" data-progress="100">
+            <div class="progress" id="progress-bar"></div>
+        </div>
+        <p id="progress-text">100% towards next reward</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- JS to dynamically set progress -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const progressBarContainer = document.querySelector('.progress-bar');
+    if (progressBarContainer) {
+        const progress = progressBarContainer.dataset.progress || 0;
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        progressBar.style.width = progress + '%';
+        progressText.textContent = progress + '% towards next reward';
+    }
+  });
+</script>
+
+{% endblock %}

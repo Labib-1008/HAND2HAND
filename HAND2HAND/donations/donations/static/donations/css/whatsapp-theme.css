@@ -1,0 +1,420 @@
+:root {
+  --wa-dark: #075E54;
+  --wa-secondary: #128C7E;
+  --wa-primary: #25D366;
+  --wa-light: #DCF8C6;
+  --wa-soft: #EAFEF3;
+  --wa-bg: #F0F2F5;
+  --wa-white: #FFFFFF;
+  --wa-text: #1F2D3D;
+  --wa-muted: #5D6D7E;
+  --wa-border: #BFEBD0;
+  --wa-shadow: rgba(18, 140, 126, 0.16);
+}
+
+/* ===== Global ===== */
+body {
+  background-color: var(--wa-bg) !important;
+  color: var(--wa-text) !important;
+}
+
+main {
+  background-color: var(--wa-bg) !important;
+}
+
+a {
+  color: inherit;
+}
+
+/* ===== Navbar ===== */
+.navbar {
+  background-color: var(--wa-dark) !important;
+  border-bottom: 2px solid var(--wa-primary) !important;
+}
+
+.nav-links a,
+.navbar .dropdown a,
+.site-name,
+.notification-btn {
+  color: var(--wa-white) !important;
+}
+
+.nav-links a:hover,
+.navbar .dropdown-content a:hover,
+.auth-btn .dropdown-content a:hover,
+.notification-content a:hover {
+  background-color: var(--wa-light) !important;
+  color: var(--wa-dark) !important;
+}
+
+.navbar .dropdown-content,
+.auth-btn .dropdown-content,
+.notification-content {
+  background-color: var(--wa-white) !important;
+  border: 1px solid var(--wa-border) !important;
+  box-shadow: 0 6px 18px var(--wa-shadow) !important;
+}
+
+.navbar .dropdown-content a,
+.auth-btn .dropdown-content a,
+.notification-content a,
+.notification-content p {
+  color: var(--wa-text) !important;
+}
+
+.notification-content p {
+  border-bottom: 1px solid var(--wa-border) !important;
+}
+
+/* ===== Buttons ===== */
+.login-btn,
+.dropdown-btn,
+.btn-primary,
+.btn-submit,
+.btn-confirm,
+.save-btn-sm,
+.change-photo-btn-sm,
+.modal-content button,
+button[type="submit"],
+input[type="submit"],
+.btn-claim,
+.submit-btn,
+.donate-btn,
+.action-btn,
+.primary-btn,
+.campaign-btn,
+.donation-btn,
+.add-btn,
+.edit-btn,
+.approve-btn,
+.view-btn {
+  background: var(--wa-primary) !important;
+  background-color: var(--wa-primary) !important;
+  border-color: var(--wa-primary) !important;
+  color: var(--wa-white) !important;
+}
+
+.login-btn:hover,
+.dropdown-btn:hover,
+.btn-primary:hover,
+.btn-submit:hover,
+.btn-confirm:hover,
+.save-btn-sm:hover,
+.change-photo-btn-sm:hover,
+.modal-content button:hover,
+button[type="submit"]:hover,
+input[type="submit"]:hover,
+.btn-claim:hover,
+.submit-btn:hover,
+.donate-btn:hover,
+.action-btn:hover,
+.primary-btn:hover,
+.campaign-btn:hover,
+.donation-btn:hover,
+.add-btn:hover,
+.edit-btn:hover,
+.approve-btn:hover,
+.view-btn:hover {
+  background: var(--wa-secondary) !important;
+  background-color: var(--wa-secondary) !important;
+  border-color: var(--wa-secondary) !important;
+  color: var(--wa-white) !important;
+}
+
+.btn-secondary,
+.btn-cancel,
+.secondary-btn,
+.cancel-btn,
+.back-btn {
+  background-color: var(--wa-white) !important;
+  color: var(--wa-secondary) !important;
+  border: 2px solid var(--wa-primary) !important;
+}
+
+.btn-secondary:hover,
+.btn-cancel:hover,
+.secondary-btn:hover,
+.cancel-btn:hover,
+.back-btn:hover {
+  background-color: var(--wa-primary) !important;
+  color: var(--wa-white) !important;
+  border-color: var(--wa-primary) !important;
+}
+
+.notification-btn .badge {
+  background-color: var(--wa-primary) !important;
+  color: var(--wa-white) !important;
+}
+
+/* ===== Home Page ===== */
+.hero-section,
+.together-section {
+  background: linear-gradient(120deg, var(--wa-soft), var(--wa-light)) !important;
+  box-shadow: 0 8px 24px var(--wa-shadow) !important;
+}
+
+.hero-text h1,
+.together-section h2,
+.carousel-item h3,
+.feature-card p {
+  color: var(--wa-dark) !important;
+}
+
+.hero-text p,
+.together-section p,
+.carousel-item p,
+.progress-text {
+  color: var(--wa-text) !important;
+}
+
+.welcome-section h2,
+.carousel-section h2,
+.tog,
+.browse-header h1,
+.campaign-header h1,
+.page-title,
+.section-title,
+h1,
+h2 {
+  color: var(--wa-dark) !important;
+}
+
+.feature-card,
+.carousel-item,
+.card,
+.request-card,
+.donation-card,
+.campaign-card,
+.profile-card,
+.info-card,
+.form-card,
+.content-card {
+  background-color: var(--wa-white) !important;
+  border-color: var(--wa-border) !important;
+  box-shadow: 0 6px 18px var(--wa-shadow) !important;
+}
+
+.feature-card {
+  border-left: 5px solid var(--wa-primary) !important;
+}
+
+.inspire-quote {
+  border-left: 4px solid var(--wa-primary) !important;
+  color: var(--wa-text) !important;
+}
+
+.inspire-quote span {
+  color: var(--wa-secondary) !important;
+}
+
+.progress,
+.progress-fill,
+.progress-bar-fill {
+  background-color: var(--wa-primary) !important;
+}
+
+.campaign-progress,
+.progress-bar {
+  background-color: #DDEFE6 !important;
+}
+
+/* ===== Forms / Inputs ===== */
+input,
+select,
+textarea,
+.form-input,
+.form-textarea,
+.compact-input {
+  border-color: var(--wa-border) !important;
+  background-color: var(--wa-white) !important;
+  color: var(--wa-text) !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.form-input:focus,
+.form-textarea:focus,
+.compact-input:focus {
+  border-color: var(--wa-primary) !important;
+  box-shadow: 0 0 6px rgba(37, 211, 102, 0.30) !important;
+  outline: none !important;
+}
+
+input[type="file"] {
+  border-color: var(--wa-border) !important;
+  background-color: var(--wa-soft) !important;
+}
+
+input[type="file"]:hover {
+  border-color: var(--wa-primary) !important;
+  background-color: var(--wa-light) !important;
+}
+
+.form-section h2,
+.form-group h2,
+.form-section h3,
+.filter-section h3,
+.card-title,
+label {
+  color: var(--wa-dark) !important;
+}
+
+/* ===== Page Containers ===== */
+.contact-container,
+.contact-info,
+.donate-container,
+.request-container,
+.profile-container,
+.compact-profile-container,
+.campaign-container,
+.browse-container,
+.detail-container,
+.claim-container,
+.review-container,
+.notifications-container,
+.rewards-container,
+.history-container {
+  background-color: var(--wa-white) !important;
+  border-color: var(--wa-border) !important;
+  box-shadow: 0 6px 20px var(--wa-shadow) !important;
+}
+
+.donate-header,
+.campaign-header,
+.request-header,
+.profile-header-compact {
+  border-bottom-color: var(--wa-border) !important;
+}
+
+.compact-left,
+.profile-type-badge,
+.modal-side {
+  background-color: var(--wa-light) !important;
+  border-color: var(--wa-border) !important;
+}
+
+.profile-photo-compact,
+.default-avatar-sm {
+  border-color: var(--wa-primary) !important;
+  background-color: var(--wa-secondary) !important;
+}
+
+.doc-item,
+.documents-compact,
+.reward-card,
+.notification-item {
+  background-color: var(--wa-soft) !important;
+  border-color: var(--wa-border) !important;
+}
+
+/* ===== NGO / Explore pages ===== */
+.filters-sidebar,
+.filter-section,
+.browse-content,
+.campaign-form,
+.donation-form,
+.donation-history-card,
+.update-card,
+.stats-card {
+  background-color: var(--wa-white) !important;
+  border-color: var(--wa-border) !important;
+}
+
+.browse-header,
+.campaign-header,
+.detail-header,
+.success-header {
+  background: linear-gradient(120deg, var(--wa-soft), var(--wa-light)) !important;
+  color: var(--wa-dark) !important;
+  border-color: var(--wa-border) !important;
+}
+
+.browse-header p,
+.campaign-header p,
+.detail-header p {
+  color: var(--wa-muted) !important;
+}
+
+/* ===== Footer ===== */
+.footer {
+  background-color: var(--wa-dark) !important;
+  border-top: 2px solid var(--wa-primary) !important;
+  color: var(--wa-white) !important;
+}
+
+.footer-title,
+.footer-text,
+.footer-links a,
+.footer-bottom,
+.footer .social-icons a {
+  color: var(--wa-white) !important;
+}
+
+.footer-link,
+.footer-links a:hover,
+.footer .social-icons a:hover,
+.social-icons a:hover {
+  color: var(--wa-primary) !important;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.20) !important;
+}
+
+.language-select {
+  background-color: var(--wa-white) !important;
+  border-color: var(--wa-border) !important;
+  color: var(--wa-text) !important;
+}
+
+/* ===== Modal ===== */
+.modal {
+  background-color: var(--wa-white) !important;
+  box-shadow: 0 10px 30px rgba(7, 94, 84, 0.28) !important;
+}
+
+.modal-content h2 {
+  color: var(--wa-dark) !important;
+}
+
+.modal-content p,
+.terms,
+small {
+  color: var(--wa-muted) !important;
+}
+
+.modal-close {
+  background-color: #E74C3C !important;
+  color: var(--wa-white) !important;
+}
+
+.modal-close:hover {
+  background-color: #C0392B !important;
+}
+
+/* ===== Alerts / Messages ===== */
+.alert.success {
+  background-color: var(--wa-light) !important;
+  color: var(--wa-dark) !important;
+  border-color: var(--wa-border) !important;
+}
+
+.alert.info {
+  background-color: var(--wa-soft) !important;
+  color: var(--wa-secondary) !important;
+  border-color: var(--wa-border) !important;
+}
+
+/* Keep danger/warning recognizable but softer */
+.alert.warning {
+  background-color: #FFF8E1 !important;
+  color: #7A5C00 !important;
+  border-color: #FFE082 !important;
+}
+
+.alert.danger {
+  background-color: #FDEDEC !important;
+  color: #922B21 !important;
+  border-color: #F5B7B1 !important;
+}

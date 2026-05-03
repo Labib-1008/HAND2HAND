@@ -1,0 +1,102 @@
+/* Container Styling */
+.rewards-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fffaf7;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    font-family: Arial, sans-serif;
+}
+
+.rewards-container h1 {
+    text-align: center;
+    color: #ff7f50;
+    margin-bottom: 1rem;
+}
+
+/* Points Section */
+.points-section h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+/* Earned Rewards */
+.earned-rewards h3,
+.next-reward-section h3 {
+    color: #ff7f50;
+    margin-bottom: 1rem;
+}
+
+.reward-list {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.reward-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffe0c0;
+    padding: 10px 15px;
+    border-radius: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.reward-badge img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 5px;
+}
+
+.reward-badge span {
+    font-weight: bold;
+    color: #333;
+}
+
+.reward-badge:hover {
+    transform: scale(1.1);
+}
+
+.no-rewards {
+    text-align: center;
+    font-style: italic;
+    color: #888;
+}
+
+/* Progress Bar */
+.progress-bar {
+    width: 100%;
+    background-color: #ddd;
+    border-radius: 25px;
+    overflow: hidden;
+    height: 25px;
+    margin-bottom: 10px;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(90deg, #ffd700, #ff69b4);
+    width: 0%; /* JS sets width dynamically */
+    border-radius: 25px;
+    transition: width 0.5s ease-in-out;
+}
+
+.next-reward-section p {
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .reward-list {
+        flex-direction: column;
+        align-items: center;
+    }
+}

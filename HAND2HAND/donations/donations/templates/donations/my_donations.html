@@ -1,0 +1,103 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'donations/css/my_donations.css' %}">
+
+<div class="my-donations-container">
+    <h1>My Donations</h1>
+
+    {% if donated_items or donated_to_requests or donated_to_campaigns %}
+        <div class="donations-list">
+
+            <!-- Normal Item Donations -->
+            {% for item in donated_items %}
+            <div class="donation-card">
+                <div class="card-image">
+                    {% if item.images.first %}
+                        <img src="{{ item.images.first.image.url }}" alt="{{ item.title }}">
+                    {% else %}
+                        <img src="{% static 'images/default-donation.jpg' %}" alt="{{ item.title }}">
+                    {% endif %}
+                </div>
+                <div class="card-content">
+                    <h3>{{ item.title }}</h3>
+                    <p class="donation-desc">{{ item.description|truncatewords:20 }}</p>
+                    <div class="donation-meta">
+                        <span class="category">{{ item.category.name }}</span>
+                        <span class="quantity">{{ item.quantity }} items</span>
+                        <span class="urgency">{{ item.get_urgency_display }}</span>
+                        <span class="date">{{ item.created_at|date:"M d, Y" }}</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="{% url 'donation_detail' item.id %}" class="btn-details">View</a>
+                        <a href="{% url 'edit_donation' item.id %}" class="btn-edit">Edit</a>
+                        <form action="{% url 'delete_donation' item.id %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete" onclick="return confirm('Are you sure?');">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <!-- Donations to Requests -->
+            {% for donation in donated_to_requests %}
+            <div class="donation-card">
+                <div class="card-image">
+                    {% if donation.image %}
+                        <img src="{{ donation.image.url }}" alt="{{ donation.title }}">
+                    {% else %}
+                        <img src="{% static 'images/default-donation.jpg' %}" alt="{{ donation.title }}">
+                    {% endif %}
+                </div>
+                <div class="card-content">
+                    <h3>{{ donation.title }}</h3>
+                    <p class="donation-desc">{{ donation.description|truncatewords:20 }}</p>
+                    <div class="donation-meta">
+                        <span class="category">Request: {{ donation.request_item.title }}</span>
+                        <span class="quantity">{{ donation.quantity }} items</span>
+                        <span class="status">{{ donation.get_status_display }}</span>
+                        <span class="date">{{ donation.created_at|date:"M d, Y" }}</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="{% url 'request_detail' donation.request_item.id %}" class="btn-details">View Request</a>
+                        {% if donation.status == 'pending' and donation.request_item.requester == request.user %}
+                            <a href="{% url 'mark_received' donation.id %}" class="btn-donate">Mark as Received</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <!-- Donations to NGO Campaigns -->
+            {% for donation in donated_to_campaigns %}
+            <div class="donation-card">
+                <div class="card-image">
+                    {% if donation.campaign.image %}
+                        <img src="{{ donation.campaign.image.url }}" alt="{{ donation.campaign.title }}">
+                    {% else %}
+                        <img src="{% static 'images/default-campaign.jpg' %}" alt="{{ donation.campaign.title }}">
+                    {% endif %}
+                </div>
+                <div class="card-content">
+                    <h3>{{ donation.campaign.title }}</h3>
+                    <p class="donation-desc">{{ donation.message|default:"No message" }}</p>
+                    <div class="donation-meta">
+                        <span class="category">Campaign</span>
+                        <span class="amount">৳{{ donation.amount }}</span>
+                        <span class="date">{{ donation.donated_at|date:"M d, Y" }}</span>
+                    </div>
+                    <div class="card-actions">
+                        <a href="{% url 'campaign_detail' donation.campaign.id %}" class="btn-details">View Campaign</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    {% else %}
+        <p>You haven’t donated any items yet. <a href="{% url 'donate_item' %}">Donate Now</a></p>
+    {% endif %}
+</div>
+{% endblock %}
