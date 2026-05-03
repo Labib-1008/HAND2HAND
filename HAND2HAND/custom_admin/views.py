@@ -535,3 +535,60 @@ def create_edit_campaign_category(request, pk=None):
 
     return render(request, "custom_admin/create_edit_campaign_category.html", {"category": category, "action": action})
 
+
+@login_required
+@admin_only
+def delete_campaign_category(request, pk):
+    category = get_object_or_404(CampaignCategory, pk=pk)
+    category.delete()
+    messages.success(request, f'Category "{category.name}" deleted successfully!')
+    return redirect('manage_campaign_categories')
+
+
+@login_required
+@admin_only
+def contact_messages(request):
+    contact_msgs = ContactMessage.objects.all().order_by('-created_at')
+    return render(request, 'custom_admin/contact_messages.html', {'contact_messages': contact_msgs})
+
+
+@login_required
+@admin_only
+def manage_rewards(request):
+    rewards = Reward.objects.all()
+
+    if request.method == "POST":
+        # Handle Add Reward
+        if 'reward_name' in request.POST and 'points_required' in request.POST:
+            name = request.POST['reward_name']
+            try:
+                points = int(request.POST['points_required'])
+                if points >= 0 and not Reward.objects.filter(name=name).exists():
+                    Reward.objects.create(name=name, points_required=points)
+                    messages.success(request, f"{name} reward added successfully!")
+                else:
+                    messages.error(request, f"Invalid points or reward already exists.")
+            except ValueError:
+                messages.error(request, "Points must be a number.")
+            return redirect('manage_rewards')
+
+        # Handle Update Rewards
+        updated = 0
+        for reward in rewards:
+            new_points = request.POST.get(f'points_{reward.id}')
+            if new_points:
+                try:
+                    points = int(new_points)
+                    if points >= 0 and points != reward.points_required:
+                        reward.points_required = points
+                        reward.save()
+                        updated += 1
+                except ValueError:
+                    messages.error(request, f"Invalid input for {reward.name}.")
+        if updated > 0:
+            messages.success(request, f"{updated} reward threshold(s) updated successfully!")
+        else:
+            messages.info(request, "No changes were made.")
+        return redirect('manage_rewards')
+
+    return render(request, "custom_admin/manage_rewards.html", {"rewards": rewards})
