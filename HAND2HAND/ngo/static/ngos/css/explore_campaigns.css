@@ -1,0 +1,296 @@
+/* ===== General Styles ===== */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #fffaf7;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===== Browse Container ===== */
+.browse-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== Header ===== */
+
+
+.browse-header {
+    text-align: center;   /* ✅ title & subtitle will be centered */
+    margin-bottom: 2rem;
+}
+
+.browse-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #333; /* optional */
+}
+
+.browse-header p {
+    font-size: 1rem;
+    color: #666; /* softer look */
+}
+
+
+/* ===== Browse Content Layout ===== */
+.browse-content {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* ===== Filters Sidebar ===== */
+.filters-sidebar {
+    flex: 0 0 250px;
+    background-color: #fff4e6;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.filters-sidebar h3 {
+    margin-bottom: 1rem;
+    color: #000;   /* black */
+}
+
+.filter-section {
+    margin-bottom: 2rem;
+}
+
+.filter-group {
+    margin-bottom: 1rem;
+}
+
+.filter-group h4 {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    color: #000;   /* black */
+}
+
+.filter-select {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 0.9rem;
+}
+
+/* ===== Buttons ===== */
+.apply-filters-btn, .reset-filters-btn {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.apply-filters-btn {
+    background-color: #ff7f50;
+    color: #fff;
+    margin-right: 0.5rem;
+}
+
+.reset-filters-btn {
+    background-color: #fff;
+    color: #ff7f50;
+    border: 1px solid #ff7f50;
+}
+
+/* ===== Donations List Wrapper ===== */
+.donations-list-wrapper {
+    flex: 1;
+}
+
+/* ===== Results Header ===== */
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.results-header h2 {
+    font-size: 1.5rem;
+    color: #000;   /* black */
+}
+
+.results-count {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* ===== Campaign Cards ===== */
+.donations-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.donation-card {
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s;
+}
+
+.donation-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-image img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-content h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+    color: #000;   /* black */
+}
+
+.by-ngo {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.campaign-desc {
+    font-size: 0.9rem;
+    color: #444;
+    flex: 1;
+    margin-bottom: 0.5rem;
+}
+
+/* ===== Campaign Stats ===== */
+.campaign-stats {
+    margin-top: 0.5rem;
+}
+
+.progress-bar {
+    background-color: #ffe6d6;
+    border-radius: 6px;
+    height: 10px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress {
+    background-color: #ff7f50;
+    height: 100%;
+    width: 0%;
+    border-radius: 6px;
+    transition: width 0.3s ease-in-out;
+}
+
+.stats span {
+    font-size: 0.8rem;
+    margin-right: 1rem;
+    color: #555;
+}
+
+/* ===== Card Actions ===== */
+.card-actions {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-details, .btn-claim {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: center;
+    transition: 0.2s;
+}
+
+.btn-details {
+    background-color: #fff;
+    color: #ff7f50;
+    border: 1px solid #ff7f50;
+}
+
+.btn-details:hover {
+    background-color: #ff7f50;
+    color: #fff;
+}
+
+.btn-claim {
+    background-color: #ff7f50;
+    color: #fff;
+}
+
+.btn-claim:hover {
+    background-color: #e66b3a;
+}
+
+/* ===== Pagination ===== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.page-btn {
+    padding: 0.4rem 0.7rem;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    text-decoration: none;
+    color: #555;
+    font-size: 0.85rem;
+    transition: 0.2s;
+}
+
+.page-btn:hover {
+    background-color: #ffecd6;
+    border-color: #ff7f50;
+}
+
+.page-btn.active {
+    background-color: #ff7f50;
+    color: #fff;
+    border-color: #ff7f50;
+}
+
+/* ===== No Results ===== */
+.no-results {
+    text-align: center;
+    color: #999;
+    padding: 2rem;
+}
+
+.no-results i {
+    color: #ff7f50;
+    margin-bottom: 1rem;
+}
+
+.no-results h3 {
+    margin-bottom: 0.5rem;
+    color: #000;  /* black */
+}
+
+.no-results p {
+    font-size: 0.9rem;
+    color: #444;
+}
