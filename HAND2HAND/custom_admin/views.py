@@ -412,3 +412,43 @@ def create_admin(request):
 
     return render(request, 'custom_admin/create_admin.html')
 
+
+@login_required
+@admin_only
+def create_edit_category(request, category_id=None):
+    category = None
+    if category_id:  # edit mode
+        category = get_object_or_404(Category, id=category_id)
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        icon = request.POST.get('icon')
+
+        # duplicate check (edit হলে নিজেরটা বাদ দিয়ে)
+        qs = Category.objects.filter(name=name)
+        if category:
+            qs = qs.exclude(id=category.id)
+
+        if qs.exists():
+            messages.error(request, 'Category already exists!')
+            return redirect('edit_category', category_id=category.id) if category else redirect('create_category')
+
+        if category:  # update
+            category.name = name
+            category.description = description
+            category.icon = icon
+            category.save()
+            messages.success(request, f'Category "{name}" updated successfully!')
+        else:  # create
+            Category.objects.create(
+                name=name,
+                description=description,
+                icon=icon
+            )
+            messages.success(request, f'Category "{name}" created successfully!')
+
+        return redirect('manage_categories')
+
+    return render(request, 'custom_admin/create_edit_category.html', {"category": category})
+
