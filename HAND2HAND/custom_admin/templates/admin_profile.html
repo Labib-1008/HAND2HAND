@@ -1,0 +1,62 @@
+{% extends "custom_admin/base_admin.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'custom_admin/css/admin_profile.css' %}">
+
+<div class="profile-container">
+    <h2>👤 My Profile</h2>
+
+    {% if messages %}
+        <div class="messages">
+            {% for msg in messages %}
+                <div class="msg {% if msg.tags %}{{ msg.tags }}{% endif %}">{{ msg }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Profile Information Form -->
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="profile_info">
+        
+        <div class="form-group">
+            <label for="name">Username</label>
+            <input type="text" id="name" name="name" value="{{ request.user.username }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" value="{{ request.user.email }}" required>
+        </div>
+
+        <button type="submit" class="btn-save">Save Changes</button>
+    </form>
+
+    <!-- Password Change Form - Integrated -->
+    <div class="password-section">
+        <h3>🔑 Change Password</h3>
+        <form method="POST" class="password-form">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="password_change">
+            
+            <div class="form-group">
+                <label for="old_password">Current Password</label>
+                <input type="password" id="old_password" name="old_password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="new_password1">New Password</label>
+                <input type="password" id="new_password1" name="new_password1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="new_password2">Confirm New Password</label>
+                <input type="password" id="new_password2" name="new_password2" required>
+            </div>
+
+            <button type="submit" class="btn-password">Update Password</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
