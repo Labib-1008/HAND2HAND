@@ -1,0 +1,45 @@
+/* custom_admin/static/css/custom_admin.css */
+.approval-container {
+    padding: 20px;
+}
+
+.approval-list {
+    display: grid;
+    gap: 15px;
+}
+
+.approval-item {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.approval-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-approve {
+    background: #4CAF50;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.btn-reject {
+    background: #f44336;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.no-pending {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-size: 18px;
+}
