@@ -1,0 +1,112 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'ngos/css/donate_to_campaign.css' %}">
+
+<div class="donate-container">
+  <div class="donate-header">
+    <h1>Donate to {{ campaign.title }}</h1>
+    <p><strong>Goal:</strong> ৳{{ campaign.goal_amount }} • <strong>Raised:</strong> ৳{{ campaign.collected_amount }}</p>
+  </div>
+
+  <div class="donation-body">
+    <!-- Quick amount buttons -->
+    <div class="quick-amounts">
+      <button type="button" class="amt-btn" data-amt="500">৳500</button>
+      <button type="button" class="amt-btn" data-amt="1000">৳1000</button>
+      <button type="button" class="amt-btn" data-amt="5000">৳5000</button>
+      <button type="button" class="amt-btn" data-amt="10000">৳10000</button>
+    </div>
+
+    <form method="post" id="donateForm" novalidate>
+      {% csrf_token %}
+
+      <div class="form-row">
+        <label for="id_amount">Amount (TK)</label>
+        {{ form.amount }}
+        {% for error in form.amount.errors %}
+          <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+      </div>
+
+      <div class="form-row">
+        <label for="id_message">Message (optional)</label>
+        {{ form.message }}
+        {% for error in form.message.errors %}
+          <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+      </div>
+
+      <div class="form-row">
+        <label for="id_payer_name">Your Name (optional)</label>
+        {{ form.payer_name }}
+        {% for error in form.payer_name.errors %}
+          <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+      </div>
+
+      <div class="form-row">
+        <label for="id_payment_method">Payment Method</label>
+        {{ form.payment_method }}
+        {% for error in form.payment_method.errors %}
+          <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+      </div>
+
+      <div class="form-row">
+        <label for="id_account_input">Account / Mobile (optional)</label>
+        {{ form.account_input }}
+        {% for error in form.account_input.errors %}
+          <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+      </div>
+
+      <div class="form-row inline">
+        {{ form.is_anonymous }} <label for="id_is_anonymous" class="inline-label">Donate anonymously</label>
+        {% for error in form.is_anonymous.errors %}
+          <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-donate" id="donateBtn">Proceed to Payment</button>
+        <a href="{% url 'campaign_detail' campaign.id %}" class="btn-secondary">Back to Campaign</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Quick amount buttons
+  document.querySelectorAll('.amt-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const amt = this.dataset.amt;
+      const input = document.querySelector('input[name="amount"]');
+      if(input) input.value = amt;
+    });
+  });
+
+  // Simple client-side validation
+  const form = document.getElementById('donateForm');
+  form.addEventListener('submit', function(e) {
+    const amountInput = document.querySelector('input[name="amount"]');
+    const paymentMethod = document.querySelector('select[name="payment_method"]');
+
+    if (!amountInput.value || isNaN(amountInput.value) || Number(amountInput.value) <= 0) {
+      e.preventDefault();
+      alert('Please enter a valid donation amount.');
+      amountInput.focus();
+      return;
+    }
+
+    if (!paymentMethod.value) {
+      e.preventDefault();
+      alert('Please select a payment method.');
+      paymentMethod.focus();
+    }
+  });
+});
+</script>
+{% endblock %}

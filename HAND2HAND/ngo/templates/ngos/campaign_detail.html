@@ -1,0 +1,171 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'ngos/css/campaign_detail.css' %}">
+
+<div class="campaign-detail-container">
+
+    <!-- Campaign Header -->
+    <div class="campaign-header">
+        <h1>{{ campaign.title }}</h1>
+        <p class="by-ngo">
+            by {% if campaign.ngo.ngoprofile %}{{ campaign.ngo.ngoprofile.ngo_name }}{% else %}{{ campaign.ngo.username }}{% endif %}
+        </p>
+    </div>
+
+    <!-- Campaign Image -->
+    <div class="campaign-image">
+        {% if campaign.image %}
+            <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}">
+        {% else %}
+            <img src="{% static 'images/default-campaign.jpg' %}" alt="{{ campaign.title }}">
+        {% endif %}
+    </div>
+
+    <!-- Donate + Share Buttons -->
+    <div class="action-buttons">
+        {% if user.is_authenticated %}
+            <a href="{% url 'donate_to_campaign' campaign.id %}" class="btn-donate">Donate Now</a>
+        {% else %}
+            <a href="#" class="btn-donate" onclick="openModal('loginModal')">Login to Donate</a>
+        {% endif %}
+        <a href="#" class="btn-share" onclick="openShareModal()">Share</a>
+    </div>
+
+    <!-- Tabs -->
+    <ul class="tabs">
+        <li class="tab-link current" data-tab="tab-overview">Overview</li>
+        <li class="tab-link" data-tab="tab-donations">Donations</li>
+        <li class="tab-link" data-tab="tab-updates">Updates</li>
+    </ul>
+
+    <!-- Tab Contents -->
+    <div id="tab-overview" class="tab-content current">
+        <h3>Campaign Details</h3>
+        <p>{{ campaign.description }}</p>
+
+        <div class="campaign-stats">
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="stats">
+                <span><strong>Raised:</strong> ৳{{ campaign.collected_amount|default:0 }}</span>
+                <span><strong>Goal:</strong> ৳{{ campaign.goal_amount|default:0 }}</span>
+                <span><strong>Donors:</strong> {{ campaign.donors_count|default:0 }}</span>
+                <p>Progress: {{ campaign.progress_percent }}%</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-donations" class="tab-content">
+        <h3>Donations</h3>
+        {% if campaign.donations.all %}
+        <ul class="donation-list">
+            {% for donation in campaign.donations.all %}
+            <li class="donation-box">
+                <div class="donor-info">
+                    <strong>
+                        {% if not donation.is_anonymous %}
+                            {{ donation.donor.username }}
+                        {% else %}
+                            Anonymous
+                        {% endif %}
+                    </strong>
+                    <span>donated ৳{{ donation.amount }}</span>
+                    <span class="donation-date">{{ donation.donated_at|date:"M d, Y" }}</span>
+                </div>
+                {% if donation.message %}
+                <div class="donor-comment">
+                    "{{ donation.message }}"
+                </div>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No donations yet.</p>
+        {% endif %}
+    </div>
+
+    <div id="tab-updates" class="tab-content">
+        <h3>Updates</h3>
+
+        <!-- NGO Update Form -->
+        {% if user == campaign.ngo %}
+        <form method="POST" action="{% url 'add_campaign_update' campaign.id %}" class="update-form">
+            {% csrf_token %}
+            <input type="text" name="title" placeholder="Update Title" required>
+            <textarea name="message" placeholder="Write your update..." required></textarea>
+            <button type="submit" class="btn-update">Post Update</button>
+        </form>
+        {% endif %}
+
+        {% if campaign.updates.all %}
+        <ul class="update-list">
+            {% for update in campaign.updates.all %}
+            <li class="update-box">
+                <strong>{{ update.title }}</strong>
+                <em>{{ update.created_at|date:"M d, Y" }}</em>
+                <p>{{ update.message }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No updates yet.</p>
+        {% endif %}
+    </div>
+
+</div>
+
+<!-- Scripts -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Tabs functionality
+    const tabs = document.querySelectorAll('.tab-link');
+    const contents = document.querySelectorAll('.tab-content');
+
+    function activateTab(tabId) {
+        tabs.forEach(t => t.classList.remove('current'));
+        contents.forEach(c => c.classList.remove('current'));
+        const activeTab = document.querySelector(`.tab-link[data-tab="${tabId}"]`);
+        const activeContent = document.getElementById(tabId);
+        if (activeTab && activeContent) {
+            activeTab.classList.add('current');
+            activeContent.classList.add('current');
+        }
+    }
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            const tab_id = tab.getAttribute('data-tab');
+            activateTab(tab_id);
+        });
+    });
+
+    // Auto-open tab from URL (like ?tab=updates)
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam) {
+        activateTab(`tab-${tabParam}`);
+    }
+
+    // Animate Progress Bar
+    const progress = document.getElementById('progress');
+    const progressPercent = parseFloat("{{ campaign.progress_percent|default:0 }}") || 0;
+    let current = 0;
+    let interval = setInterval(() => {
+        if(current >= progressPercent) clearInterval(interval);
+        progress.style.width = (current += 1) + "%";
+    }, 10);
+});
+
+// Social Share Modal
+function openShareModal() {
+    alert("Share this campaign on social media!"); 
+    // TODO: implement real social share links
+}
+</script>
+
+
+{% endblock %}

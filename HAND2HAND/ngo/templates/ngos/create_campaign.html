@@ -1,0 +1,98 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'ngos/css/create_campaign.css' %}">
+
+<div class="campaign-container">
+    <div class="campaign-header">
+        <h1><i class="fas fa-bullhorn"></i> Create New Campaign</h1>
+        <p>Fill the form below to start a new campaign. Admin approval required.</p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="campaign-form" id="campaignForm">
+        {% csrf_token %}
+
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+
+            {% if field.name == "category" %}
+                <select name="{{ field.name }}" id="{{ field.id_for_label }}" class="form-control">
+                    <option value="">Select Category</option>
+                    {% for cat in field.field.queryset %}
+                        <option value="{{ cat.id }}" {% if field.value == cat.id|stringformat:"s" %}selected{% endif %}>
+                            {{ cat.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                {{ field }}
+            {% endif %}
+
+            {% if field.help_text %}
+            <small class="help-text">{{ field.help_text }}</small>
+            {% endif %}
+
+            {% if field.errors %}
+            <div class="field-errors">
+                {% for error in field.errors %}
+                <p class="error-text">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <!-- Image Preview -->
+        <div class="form-group" id="imagePreviewContainer" style="display:none;">
+            <label>Selected Image Preview:</label>
+            <img id="imagePreview" src="#" alt="Image Preview" style="max-width:100%; border-radius:8px; margin-top:0.5rem;">
+            <p id="fileWarning" class="file-warning"></p>
+        </div>
+
+        <button type="submit" class="btn-submit">Submit Campaign</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const imageInput = document.querySelector('input[type="file"]');
+    const previewContainer = document.getElementById('imagePreviewContainer');
+    const previewImage = document.getElementById('imagePreview');
+    const fileWarning = document.getElementById('fileWarning');
+    const maxSizeMB = 2; // Max 2MB
+
+    if(imageInput) {
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if(file) {
+                if(!file.type.startsWith('image/')) {
+                    fileWarning.textContent = "Only image files are allowed.";
+                    previewContainer.style.display = 'none';
+                    imageInput.value = "";
+                    return;
+                }
+
+                if(file.size > maxSizeMB * 1024 * 1024) {
+                    fileWarning.textContent = `File too large. Max size is ${maxSizeMB}MB.`;
+                    previewContainer.style.display = 'none';
+                    imageInput.value = "";
+                    return;
+                }
+
+                fileWarning.textContent = "";
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                previewContainer.style.display = 'none';
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

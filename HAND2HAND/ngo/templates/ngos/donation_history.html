@@ -1,0 +1,40 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'ngos/css/donation_history.css' %}">
+
+<div class="donation-history-container">
+    <h1>Donation History</h1>
+
+    {% if donations %}
+    <ul class="donation-list">
+        {% for donation in donations %}
+        <li class="donation-box">
+            <div class="donor-info">
+                <strong>
+                    {% if not donation.is_anonymous %}
+                        {{ donation.donor.username }}
+                    {% else %}
+                        Anonymous
+                    {% endif %}
+                </strong>
+                <span>donated ৳{{ donation.amount }}</span>
+                <span class="donation-date">{{ donation.donated_at|date:"M d, Y" }}</span>
+            </div>
+            {% if donation.message %}
+            <div class="donor-comment">
+                "{{ donation.message }}"
+            </div>
+            {% endif %}
+            <div class="campaign-name">
+                Campaign: <strong>{{ donation.campaign.title }}</strong>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No donations received yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
