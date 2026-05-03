@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('donations', '0007_askfordonation_category_and_more'),
+        ('donations1', '0007_askfordonation_category_and_more'),
     ]
 
     operations = [
@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('status', models.CharField(choices=[('pending', 'Pending Approval'), ('approved', 'Approved'), ('rejected', 'Rejected')], default='pending', max_length=20)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('approved_at', models.DateTimeField(blank=True, null=True)),
-                ('category', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='donations.category')),
+                ('category', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='donations1.category')),
                 ('requester', models.ForeignKey(limit_choices_to={'user_type': 'donor/recipient'}, on_delete=django.db.models.deletion.CASCADE, related_name='requests', to=settings.AUTH_USER_MODEL)),
             ],
         ),

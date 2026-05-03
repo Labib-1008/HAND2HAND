@@ -7,14 +7,14 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('donations', '0006_alter_donationreview_unique_together_and_more'),
+        ('donations1', '0006_alter_donationreview_unique_together_and_more'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='askfordonation',
             name='category',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='donations.category'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='donations1.category'),
         ),
         migrations.AddField(
             model_name='askfordonation',

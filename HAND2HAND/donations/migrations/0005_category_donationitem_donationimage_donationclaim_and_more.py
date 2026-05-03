@@ -10,7 +10,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('donations', '0004_user_profile_picture'),
+        ('donations1', '0004_user_profile_picture'),
     ]
 
     operations = [
@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
                 ('expiry_date', models.DateTimeField(blank=True, null=True)),
                 ('notify_immediately', models.BooleanField(default=False)),
                 ('is_verified', models.BooleanField(default=False)),
-                ('category', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='donations.category')),
+                ('category', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='donations1.category')),
                 ('donor', models.ForeignKey(limit_choices_to={'user_type': 'donor/recipient'}, on_delete=django.db.models.deletion.CASCADE, related_name='donated_items', to=settings.AUTH_USER_MODEL)),
             ],
             options={
@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
                 ('caption', models.CharField(blank=True, max_length=200)),
                 ('is_primary', models.BooleanField(default=False)),
                 ('uploaded_at', models.DateTimeField(auto_now_add=True)),
-                ('donation_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='donations.donationitem')),
+                ('donation_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='donations1.donationitem')),
             ],
         ),
         migrations.CreateModel(
@@ -72,7 +72,7 @@ class Migration(migrations.Migration):
                 ('preferred_date', models.DateTimeField(blank=True, null=True)),
                 ('contact_number', models.CharField(blank=True, max_length=20)),
                 ('claimant', models.ForeignKey(limit_choices_to={'user_type': 'donor/recipient'}, on_delete=django.db.models.deletion.CASCADE, related_name='claims_made', to=settings.AUTH_USER_MODEL)),
-                ('donation_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='claims', to='donations.donationitem')),
+                ('donation_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='claims', to='donations1.donationitem')),
             ],
             options={
                 'ordering': ['-created_at'],
@@ -88,9 +88,9 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('is_approved', models.BooleanField(default=True)),
-                ('claim', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='review', to='donations.donationclaim')),
+                ('claim', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='review', to='donations1.donationclaim')),
                 ('claimant', models.ForeignKey(limit_choices_to={'user_type': 'donor/recipient'}, on_delete=django.db.models.deletion.CASCADE, related_name='reviews_given', to=settings.AUTH_USER_MODEL)),
-                ('donation_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reviews', to='donations.donationitem')),
+                ('donation_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reviews', to='donations1.donationitem')),
             ],
             options={
                 'unique_together': {('donation_item', 'claimant')},

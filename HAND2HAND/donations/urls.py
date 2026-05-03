@@ -39,8 +39,8 @@ urlpatterns = [
     
     
 
-    # User donations & profile
-    path("my-donations/", views.my_donations, name="my_donations"),
+    # User donations1 & profile
+    path("my-donations1/", views.my_donations, name="my_donations"),
     path('my-claims/', views.my_claims, name='my_claims'),
     path('donation/<int:item_id>/edit/', views.edit_donation, name='edit_donation'),
     path('donation/<int:item_id>/delete/', views.delete_donation, name='delete_donation'),

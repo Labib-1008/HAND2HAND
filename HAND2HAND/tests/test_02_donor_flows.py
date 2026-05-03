@@ -59,7 +59,7 @@ class TestDonorFlows:
             print("✅ Donation item created successfully")
 
     def test_browse_donations_with_filters(self, driver, donor_user2, live_server, sample_donations):
-        """Test browsing donations with category and location filters"""
+        """Test browsing donations1 with category and location filters"""
         # Login as second donor
         success = login_user(driver, live_server, "donor2", "donorpass2")
         assert success, "Login failed"
@@ -68,9 +68,9 @@ class TestDonorFlows:
         driver.get(f"{live_server.url}/explore/")
         time.sleep(1)
         
-        # Check if donations are displayed
+        # Check if donations1 are displayed
         donation_cards = driver.find_elements(By.CSS_SELECTOR, ".donation-card, .card, [class*='donation']")
-        assert len(donation_cards) > 0, "No donations found on explore page"
+        assert len(donation_cards) > 0, "No donations1 found on explore page"
         
         # Test category filter
         category_filter = wait_for_element(driver, By.NAME, "category")
@@ -263,22 +263,22 @@ class TestDonorFlows:
             print("✅ Donation to request successful")
 
     def test_view_my_donations(self, driver, donor_user, live_server, sample_donations):
-        """Test viewing own donations"""
+        """Test viewing own donations1"""
         # Login as donor
         success = login_user(driver, live_server, "donor1", "donorpass")
         assert success, "Login failed"
         
-        # Navigate to my donations page
-        driver.get(f"{live_server.url}/my-donations/")
+        # Navigate to my donations1 page
+        driver.get(f"{live_server.url}/my-donations1/")
         time.sleep(1)
         
-        # Check if donations are displayed
+        # Check if donations1 are displayed
         donation_items = driver.find_elements(By.CSS_SELECTOR, ".donation-item, .card, [class*='donation']")
-        assert len(donation_items) > 0, "No donations found on my donations page"
+        assert len(donation_items) > 0, "No donations1 found on my donations1 page"
         
         # Check for donation details
         assert "Mathematics Textbooks" in driver.page_source, "Expected donation not found"
-        print("✅ My donations page displayed correctly")
+        print("✅ My donations1 page displayed correctly")
 
     def test_full_profile_workflow(self, driver, donor_user, live_server, test_image_path):
         """Test full profile workflow: view, update, upload picture"""

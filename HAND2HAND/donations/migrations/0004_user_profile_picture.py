@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('donations', '0003_remove_ngoprofile_user_askfordonation_approved_at_and_more'),
+        ('donations1', '0003_remove_ngoprofile_user_askfordonation_approved_at_and_more'),
     ]
 
     operations = [

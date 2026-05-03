@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
-# ===== User Model (in donations app) =====
+# ===== User Model (in donations1 app) =====
 class User(AbstractUser):
     USER_TYPE_CHOICES = (
         ('donor/recipient', 'Donor/Recipient'),
@@ -260,7 +260,7 @@ class DonationToRequest(models.Model):
     request_item = models.ForeignKey(
         RequestItem, 
         on_delete=models.CASCADE, 
-        related_name='donations'
+        related_name='donations1'
     )
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)

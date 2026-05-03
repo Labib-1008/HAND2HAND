@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('donations', '0009_requestitem_urgency'),
+        ('donations1', '0009_requestitem_urgency'),
     ]
 
     operations = [
@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('donor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='donations_to_requests', to=settings.AUTH_USER_MODEL)),
-                ('request_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='donations', to='donations.requestitem')),
+                ('request_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='donations1', to='donations1.requestitem')),
             ],
             options={
                 'ordering': ['-created_at'],

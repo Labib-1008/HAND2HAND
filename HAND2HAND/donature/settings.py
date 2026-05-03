@@ -41,12 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'custom_admin',
-    'donations',
+    'donations1',
     'ngos',
     "django.contrib.humanize",
 ]
 
-AUTH_USER_MODEL = 'donations.User'
+AUTH_USER_MODEL = 'donations1.User'
 
 
 
@@ -82,7 +82,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
 
-                'donations.context_processors.notifications_context',
+                'donations1.context_processors.notifications_context',
                 'custom_admin.views.admin_context',
             ],
         },
@@ -146,7 +146,7 @@ STATIC_URL = '/static/'
 
 # Local static files during development
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'donations', 'static'),  # তোমার আসল static folder থাকলে
+    os.path.join(BASE_DIR, 'donations1', 'static'),  # তোমার আসল static folder থাকলে
     os.path.join(BASE_DIR, 'custom_admin', 'static'),
     os.path.join(BASE_DIR, 'ngos', 'static'),
 ]

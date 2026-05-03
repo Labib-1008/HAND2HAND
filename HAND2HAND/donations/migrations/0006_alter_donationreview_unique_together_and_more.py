@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('donations', '0005_category_donationitem_donationimage_donationclaim_and_more'),
+        ('donations1', '0005_category_donationitem_donationimage_donationclaim_and_more'),
     ]
 
     operations = [

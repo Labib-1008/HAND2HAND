@@ -54,10 +54,10 @@ def home(request):
 
     # Features (static for now)
     features = [
-        {'title': 'Donate', 'icon': 'donations/images/icon-donate.png'},
-        {'title': 'NGO', 'icon': 'donations/images/ngo.png'},
-        {'title': 'Reward', 'icon': 'donations/images/reward.png'},
-        {'title': 'Campaign', 'icon': 'donations/images/campaign.png'},
+        {'title': 'Donate', 'icon': 'donations1/images/icon-donate.png'},
+        {'title': 'NGO', 'icon': 'donations1/images/ngo.png'},
+        {'title': 'Reward', 'icon': 'donations1/images/reward.png'},
+        {'title': 'Campaign', 'icon': 'donations1/images/campaign.png'},
     ]
 
 
@@ -67,8 +67,7 @@ def home(request):
         'features': features,
     }
 
-    return render(request, 'donations/home.html', context)
-
+    return render(request, 'donations1/home.html', context)
 
 
 
@@ -204,7 +203,7 @@ def signup(request):
 
 
 def about(request):
-    return render(request, "donations/about.html")
+    return render(request, "donations1/about.html")
 
 
 
@@ -222,14 +221,14 @@ def contact(request):
             form = ContactForm()
     else:
         form = ContactForm()
-    return render(request, 'donations/contact.html', {'form': form})
+    return render(request, 'donations1/contact.html', {'form': form})
 
 @login_required
 def my_rewards(request):
     user_reward, created = UserReward.objects.get_or_create(user=request.user)
     next_reward = user_reward.next_reward()
     progress = user_reward.progress_percentage()
-    return render(request, "donations/my_rewards.html", {
+    return render(request, "donations1/my_rewards.html", {
         "user_reward": user_reward,
         "next_reward": next_reward,
         "progress": progress
@@ -248,7 +247,7 @@ def my_rewards(request):
 # ===== EXPLORE DONATIONS VIEW =====
 
 def explore_donations(request):
-    # Show available donations with filtering and search
+    # Show available donations1 with filtering and search
     donations = DonationItem.objects.filter(status='available').select_related('category', 'donor')
     
     # Get filter parameters
@@ -276,15 +275,15 @@ def explore_donations(request):
     # Get unique locations for filter dropdown
     locations = DonationItem.objects.filter(status='available').values_list('location', flat=True).distinct()
     
-    # Pagination - Add this for better performance with many donations
-    paginator = Paginator(donations, 12)  # Show 12 donations per page
+    # Pagination - Add this for better performance with many donations1
+    paginator = Paginator(donations, 12)  # Show 12 donations1 per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
     categories = Category.objects.all()
     
     context = {
-        'donations': page_obj,  # Use paginated object
+        'donations1': page_obj,  # Use paginated object
         'categories': categories,
         'locations': [loc for loc in locations if loc],  # Filter out empty values
         'selected_category': category_id,
@@ -292,7 +291,7 @@ def explore_donations(request):
         'selected_urgency': urgency,
         'search_query': search_query or '',
     }
-    return render(request, "donations/explore_donations.html", context)
+    return render(request, "donations1/explore_donations.html", context)
 
 # ===== DONATION DETAIL VIEW =====
 def donation_detail(request, item_id):
@@ -324,7 +323,7 @@ def donation_detail(request, item_id):
         'average_rating': donation_item.average_rating,
         'total_reviews': donation_item.total_reviews,
     }
-    return render(request, 'donations/donation_detail.html', context)
+    return render(request, 'donations1/donation_detail.html', context)
 
 # ===== DONATE ITEM VIEW  =====
 
@@ -354,7 +353,7 @@ def donate_item(request):
         form = DonationItemForm()
 
     categories = Category.objects.all()
-    return render(request, "donations/donate_item.html", {'form': form, 'categories': categories})
+    return render(request, "donations1/donate_item.html", {'form': form, 'categories': categories})
 
 
 
@@ -406,7 +405,7 @@ def claim_donation(request, item_id):
         'donation_item': donation_item,
         'form': form,
     }
-    return render(request, 'donations/claim_donation.html', context)
+    return render(request, 'donations1/claim_donation.html', context)
 
 
 # ===== SUBMIT REVIEW VIEW =====
@@ -450,7 +449,7 @@ def submit_review(request, claim_id):
         'claim': claim,
         'donation_item': claim.donation_item,
     }
-    return render(request, 'donations/submit_review.html', context)
+    return render(request, 'donations1/submit_review.html', context)
 
 
 
@@ -469,7 +468,7 @@ def request_item(request):
     else:
         form = RequestItemForm()
     
-    return render(request, "donations/request_item.html", {"form": form})
+    return render(request, "donations1/request_item.html", {"form": form})
 
 
 
@@ -482,7 +481,7 @@ def donate_to_requests(request):
     # Base queryset: approved requests 
     requests_list = RequestItem.objects.filter(status='approved')
 
-    # Exclude requests that already have donations
+    # Exclude requests that already have donations1
     requests_list = requests_list.exclude(donations__isnull=False)
 
     
@@ -514,7 +513,7 @@ def donate_to_requests(request):
         "urgency": urgency or "",
     }
     
-    return render(request, "donations/donate_to_requests.html", context)
+    return render(request, "donations1/donate_to_requests.html", context)
 
 
 @login_required
@@ -547,7 +546,7 @@ def donate_item_to_request(request, request_id):
             )
 
             messages.success(request, f"Successfully donated '{donation.title}' to {request_item.title}!")
-            return redirect('my_donations')  # ✅ donor's my donations page
+            return redirect('my_donations')  # ✅ donor's my donations1 page
     else:
         form = DonationToRequestForm()
 
@@ -555,7 +554,7 @@ def donate_item_to_request(request, request_id):
         'form': form,
         'request_item': request_item,
     }
-    return render(request, 'donations/donate_item_to_request.html', context)
+    return render(request, 'donations1/donate_item_to_request.html', context)
 
 
 
@@ -596,7 +595,7 @@ def my_requests(request):
     context = {
         "requests_list": requests_list
     }
-    return render(request, "donations/my_requests.html", context)
+    return render(request, "donations1/my_requests.html", context)
 
 
 @login_required
@@ -612,7 +611,7 @@ def edit_request(request, pk):
     else:
         form = RequestItemForm(instance=req)
 
-    return render(request, "donations/request_item.html", {"form": form, "is_edit": True})
+    return render(request, "donations1/request_item.html", {"form": form, "is_edit": True})
 
 @login_required
 def delete_request(request, pk):
@@ -631,7 +630,7 @@ def request_detail(request, pk):
 
     has_donations = req.donations.exists()
 
-    return render(request, "donations/request_detail.html", {
+    return render(request, "donations1/request_detail.html", {
         "req": req,
         "donor_has_donated": donor_has_donated,
         "has_donations": has_donations,
@@ -665,7 +664,7 @@ def my_donations(request):
         'donated_to_campaigns': donated_to_campaigns,
         'claims': claims,
     }
-    return render(request, 'donations/my_donations.html', context)
+    return render(request, 'donations1/my_donations.html', context)
 
 
 # ===== PROFILE VIEW =====
@@ -680,7 +679,7 @@ def profile(request):
             'profile': profile,
             'user_type': 'donor/recipient'
         }
-        return render(request, 'donations/profile.html', context)
+        return render(request, 'donations1/profile.html', context)
     
     elif user.user_type == 'ngo':
         profile = get_object_or_404(NGOProfile, user=user)
@@ -688,7 +687,7 @@ def profile(request):
             'profile': profile,
             'user_type': 'ngo'
         }
-        return render(request, 'donations/profile.html', context)
+        return render(request, 'donations1/profile.html', context)
     
 
 
@@ -810,7 +809,7 @@ def edit_donation(request, item_id):
         'donation': donation,
         'existing_image': existing_image
     }
-    return render(request, 'donations/edit_donation.html', context)
+    return render(request, 'donations1/edit_donation.html', context)
 
 
 # ===== delete Donation =====
@@ -824,7 +823,7 @@ def delete_donation(request, item_id):
         return redirect('my_donations')
     
     # Show a confirmation page
-    return render(request, 'donations/confirm_delete.html', {'item': item})
+    return render(request, 'donations1/confirm_delete.html', {'item': item})
 
 
 
@@ -916,7 +915,7 @@ def complete_claim(request, claim_id):
 @login_required
 def my_claims(request):
     claims = DonationClaim.objects.filter(claimant=request.user)
-    return render(request, 'donations/my_claims.html', {'claims': claims})
+    return render(request, 'donations1/my_claims.html', {'claims': claims})
 
 
 
@@ -935,7 +934,7 @@ def notifications_page(request):
         'notifications': notifications,
         'notifications_unread_count': 0,  # সব read হয়ে গিয়েছে
     }
-    return render(request, 'donations/notifications.html', context)
+    return render(request, 'donations1/notifications.html', context)
 
 
 

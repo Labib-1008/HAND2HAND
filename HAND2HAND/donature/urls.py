@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('donations.urls')),
+    path('', include('donations1.urls')),
     path("panel/", include("custom_admin.urls")),  # custom admin panel
     path('ngos/', include('ngos.urls')),
     

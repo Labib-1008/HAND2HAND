@@ -1,4 +1,4 @@
-# donations/context_processors.py
+# donations1/context_processors.py
 from .models import Notification
 
 def notifications_context(request):

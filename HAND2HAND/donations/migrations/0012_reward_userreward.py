@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('donations', '0011_contactmessage'),
+        ('donations1', '0011_contactmessage'),
     ]
 
     operations = [
@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('points', models.IntegerField(default=0)),
-                ('rewards', models.ManyToManyField(blank=True, to='donations.reward')),
+                ('rewards', models.ManyToManyField(blank=True, to='donations1.reward')),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='reward', to=settings.AUTH_USER_MODEL)),
             ],
         ),

@@ -1,4 +1,4 @@
-# donations/forms.py
+# donations1/forms.py
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
@@ -263,7 +263,7 @@ class DonationSearchForm(forms.Form):
     q = forms.CharField(
         required=False,
         widget=forms.TextInput(attrs={
-            'placeholder': 'Search donations...',
+            'placeholder': 'Search donations1...',
             'class': 'form-control'
         })
     )
@@ -305,8 +305,6 @@ class CustomPasswordChangeForm(forms.Form):
 
 
 # ===== DONATION TO REQUEST FORM =====
-
-
 
 class DonationToRequestForm(forms.ModelForm):
     class Meta:
