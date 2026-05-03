@@ -1,0 +1,44 @@
+# ========== Python ==========
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# ========== Virtual Environment ==========
+venv/
+ENV/
+env/
+
+# ========== Django ==========
+#*.sqlite3
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3-journal
+
+# Ignore migrations if you want (optional)
+# */migrations/*.py
+# */migrations/*.pyc
+
+# ========== Media and Documents ==========
+#media/
+#documents/
+
+# ========== Static Files ==========
+staticfiles/
+# Note: keep 'static/' if you have custom static files committed
+
+# ========== IDE / Editor ==========
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# ========== OS ==========
+.DS_Store
+Thumbs.db

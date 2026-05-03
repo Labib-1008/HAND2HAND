@@ -1,0 +1,9 @@
+{% extends "donations/base.html" %}
+
+{% block content %}
+<div class="error-container" style="max-width:600px; margin:50px auto; text-align:center; padding:20px; border:1px solid #f44336; border-radius:8px; background-color:#ffe6e6;">
+    <h2 style="color:#f44336;">Payment Error</h2>
+    <p>{{ msg }}</p>
+    <a href="{% url 'explore_campaigns' %}" class="btn-secondary" style="margin-top:20px; display:inline-block; padding:10px 20px; background-color:#ddd; color:#333; text-decoration:none; border-radius:5px;">Back to Campaigns</a>
+</div>
+{% endblock %}

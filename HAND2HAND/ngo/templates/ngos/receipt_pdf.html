@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Donation Receipt</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: #2c3e50; }
+        .summary { border: 1px solid #ccc; padding: 15px; border-radius: 8px; }
+        p { margin: 8px 0; }
+        .footer { text-align: center; margin-top: 30px; font-size: 0.9em; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Donation Receipt</h1>
+        <p>Thank you for supporting {{ donation.campaign.title }}</p>
+    </div>
+
+    <div class="summary">
+    <p><strong>Receipt ID:</strong> #{{ donation.id }}</p>
+    <p><strong>Donor:</strong> {% if donation.is_anonymous %}Anonymous{% else %}{{ donation.donor.username }}{% endif %}</p>
+    <p><strong>Amount:</strong> ৳{{ donation.amount }}</p>
+    <p><strong>Payment Method:</strong> {{ donation.payment_method }}</p>
+    <p><strong>Transaction ID:</strong> {{ donation.transaction_id }}</p>
+    {% if donation.message %}
+    <p><strong>Message:</strong> "{{ donation.message }}"</p>
+    {% endif %}
+    <p><strong>Date:</strong> {{ donation.donated_at|date:"M d, Y H:i" }}</p>
+    <p><em>Note: This receipt is generated in SSLCommerz Sandbox (Demo) mode.</em></p>
+</div>
+
+
+    <div class="footer">
+        <p>This is a system-generated receipt. No actual money transaction occurred.</p>
+    </div>
+</body>
+</html>
