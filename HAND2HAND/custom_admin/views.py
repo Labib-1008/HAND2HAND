@@ -66,3 +66,78 @@ def admin_dashboard(request):
     })
 
 
+# Base admin context processor (optional)
+def admin_context(request):
+    if request.user.is_authenticated and request.user.user_type == 'admin':
+        return {
+            'pending_ngos_count': User.objects.filter(user_type='ngo', is_approved=False).count(),
+            'pending_campaigns_count': Campaign.objects.filter(status='pending').count(),
+            'pending_requests_count': RequestItem.objects.filter(status='pending').count(),
+        }
+    return {}
+
+
+@login_required
+@admin_only
+def manage_users(request):
+    users = User.objects.exclude(user_type="admin")
+    return render(request, "custom_admin/manage_users.html", {"users": users})
+
+
+@login_required
+@admin_only
+def manage_ngos(request):
+    ngos = User.objects.filter(user_type="ngo")
+    return render(request, "custom_admin/manage_ngos.html", {"ngos": ngos})
+
+
+@login_required
+@admin_only
+def manage_donations(request):
+    # Show both old and new donation systems
+    old_donations = DonationItem.objects.all()
+    new_donations = DonationItem.objects.all()
+
+    return render(request, "custom_admin/manage_donations.html", {
+        "old_donations": old_donations,
+        "new_donations": new_donations
+    })
+
+
+@login_required
+@admin_only
+def manage_donation_claims(request):
+    claims = DonationClaim.objects.all().select_related('donation_item', 'claimant')
+    return render(request, "custom_admin/manage_donation_claims.html", {"claims": claims})
+
+
+@login_required
+@admin_only
+def manage_campaigns(request):
+    campaigns = Campaign.objects.all()
+    return render(request, "custom_admin/manage_campaigns.html", {"campaigns": campaigns})
+
+
+@login_required
+@admin_only
+def manage_categories(request):
+    categories = Category.objects.all().annotate(
+        donation_count=Count('donationitem')
+    )
+    return render(request, "custom_admin/manage_categories.html", {"categories": categories})
+
+
+@login_required
+@admin_only
+def manage_admins(request):
+    admins = User.objects.filter(user_type="admin")
+    return render(request, "custom_admin/manage_admins.html", {"admins": admins})
+
+
+@login_required
+@admin_only
+def manage_reviews(request):
+    reviews = DonationReview.objects.all().select_related('donation_item', 'claimant')
+    return render(request, "custom_admin/manage_reviews.html", {"reviews": reviews})
+
+
