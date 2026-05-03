@@ -452,3 +452,86 @@ def create_edit_category(request, category_id=None):
 
     return render(request, 'custom_admin/create_edit_category.html', {"category": category})
 
+
+@login_required
+@admin_only
+def system_stats(request):
+    # Detailed statistics
+    today = timezone.now().date()
+    week_ago = today - timedelta(days=7)
+    month_ago = today - timedelta(days=30)
+
+    # Donation statistics
+    donations_today = DonationItem.objects.filter(created_at__date=today).count()
+    donations_week = DonationItem.objects.filter(created_at__date__gte=week_ago).count()
+    donations_month = DonationItem.objects.filter(created_at__date__gte=month_ago).count()
+
+    # User statistics
+    new_users_today = User.objects.filter(date_joined__date=today).count()
+    new_users_week = User.objects.filter(date_joined__date__gte=week_ago).count()
+
+    # Claim statistics
+    claims_today = DonationClaim.objects.filter(created_at__date=today).count()
+    completed_claims = DonationClaim.objects.filter(status='completed').count()
+
+    context = {
+        'donations_today': donations_today,
+        'donations_week': donations_week,
+        'donations_month': donations_month,
+        'new_users_today': new_users_today,
+        'new_users_week': new_users_week,
+        'claims_today': claims_today,
+        'completed_claims': completed_claims,
+    }
+    return render(request, 'custom_admin/system_stats.html', context)
+
+
+@login_required
+@admin_only
+def manage_campaign_categories(request):
+    categories = CampaignCategory.objects.all()
+    return render(request, "custom_admin/manage_campaign_categories.html", {"categories": categories})
+
+
+@login_required
+@admin_only
+def create_edit_campaign_category(request, pk=None):
+    if pk:
+        category = get_object_or_404(CampaignCategory, pk=pk)
+        action = "Edit"
+    else:
+        category = None
+        action = "Create"
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        icon = request.POST.get('icon')
+
+        # Check duplicate name
+        qs = CampaignCategory.objects.filter(name=name)
+        if category:
+            qs = qs.exclude(pk=category.pk)
+
+        if qs.exists():
+            messages.error(request, f'Category with name "{name}" already exists!')
+            return redirect(request.path)  # stay on same page
+
+        if category:
+            category.name = name
+            category.description = description
+            category.icon = icon
+            category.save()
+            messages.success(request, f'Category "{name}" updated successfully!')
+        else:
+            CampaignCategory.objects.create(
+                name=name,
+                description=description,
+                icon=icon
+            )
+            messages.success(request, f'Category "{name}" created successfully!')
+
+        return redirect('manage_campaign_categories')
+
+    return render(request, "custom_admin/create_edit_campaign_category.html", {"category": category, "action": action})
+
