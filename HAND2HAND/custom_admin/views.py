@@ -347,3 +347,68 @@ def update_claim_status(request, claim_id):
 
     return redirect('manage_donation_claims')
 
+
+@login_required
+@admin_only
+def delete_user(request, user_id):
+    user_to_delete = get_object_or_404(User, id=user_id)
+    username = user_to_delete.username
+    user_to_delete.delete()
+    messages.success(request, f'User {username} has been deleted successfully!')
+    return redirect('manage_users')
+
+
+@login_required
+@admin_only
+def delete_donation_admin(request, donation_id):
+    donation = get_object_or_404(DonationItem, id=donation_id)
+    title = donation.title
+    donation.delete()
+    messages.success(request, f'Donation "{title}" has been deleted successfully!')
+    return redirect('manage_donations')
+
+
+@login_required
+@admin_only
+def delete_campaign(request, campaign_id):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    title = campaign.title
+    campaign.delete()
+    messages.success(request, f'Campaign "{title}" has been deleted successfully!')
+    return redirect('manage_campaigns')
+
+
+@login_required
+@admin_only
+def delete_category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    name = category.name
+    category.delete()
+    messages.success(request, f'Category "{name}" has been deleted successfully!')
+    return redirect('manage_categories')
+
+
+@login_required
+@admin_only
+def create_admin(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'Username already exists!')
+            return redirect('create_admin')
+
+        new_admin = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password,
+            user_type='admin',
+            is_approved=True
+        )
+        messages.success(request, f'New admin {username} created successfully!')
+        return redirect('manage_admins')
+
+    return render(request, 'custom_admin/create_admin.html')
+
