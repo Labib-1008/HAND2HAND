@@ -1,0 +1,32 @@
+{% extends "donations/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'ngos/css/donation_success.css' %}">
+
+<div class="success-container">
+    <div class="success-card">
+        <h1>Thank you for your donation!</h1>
+        <p>You have successfully donated to <strong>{{ donation.campaign.title }}</strong></p>
+
+        <div class="donation-summary">
+    <p><strong>Donor:</strong> {% if donation.is_anonymous %}Anonymous{% else %}{{ donation.donor.username }}{% endif %}</p>
+    <p><strong>Amount:</strong> ৳{{ donation.amount }}</p>
+    <p><strong>Transaction ID:</strong> {{ donation.transaction_id }}</p>
+    <p><strong>Payment Method:</strong> {{ donation.payment_method }}</p>
+    {% if donation.message %}
+    <p><strong>Message:</strong> "{{ donation.message }}"</p>
+    {% endif %}
+    <p><strong>Date:</strong> {{ donation.donated_at|date:"M d, Y H:i" }}</p>
+</div>
+
+
+        <div class="success-actions">
+            <a href="{% url 'explore_campaigns' %}" class="btn-primary">Back to Campaigns</a>
+            <a href="{% url 'download_receipt' donation.id %}" class="btn-secondary">Download Receipt (PDF)</a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
