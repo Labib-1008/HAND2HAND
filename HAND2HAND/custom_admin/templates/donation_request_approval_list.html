@@ -1,0 +1,48 @@
+{% extends "custom_admin/base_admin.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-hand-holding-usd"></i> Donation Request Approval Queue</h2>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if pending_requests %}
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Requester</th>
+                        <th>Category</th>
+                        <th>Quantity Needed</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in pending_requests %}
+                    <tr>
+                        <td>{{ request.title }}</td>
+                        <td>{{ request.requester.username }}</td>
+                        <td>{{ request.category.name }}</td>
+                        <td>{{ request.quantity_needed }}</td>
+                        <td>{{ request.created_at|date:"M d, Y" }}</td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="{% url 'approve_donation_request' request.id %}" class="btn btn-sm btn-success">Approve</a>
+                                <a href="{% url 'reject_donation_request' request.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Reject</a>
+                                <a href="#" class="btn btn-sm btn-info">View</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted">No pending donation requests.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

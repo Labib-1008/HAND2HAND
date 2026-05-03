@@ -1,0 +1,136 @@
+{% extends "custom_admin/base_admin.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'custom_admin/css/dashboard.css' %}">
+
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h1>
+        <p class="dashboard-subtitle">Overview of the donation platform</p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+        <!-- Total Users -->
+        <div class="stat-card">
+            <div class="stat-icon users">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-info">
+                <h3>Total Users</h3>
+                <p class="stat-number">{{ total_users }}</p>
+                <p class="stat-label">Registered Users</p>
+            </div>
+        </div>
+
+        <!-- Total NGOs -->
+        <div class="stat-card">
+            <div class="stat-icon ngos">
+                <i class="fas fa-hand-holding-heart"></i>
+            </div>
+            <div class="stat-info">
+                <h3>Total NGOs</h3>
+                <p class="stat-number">{{ total_ngos }}</p>
+                <p class="stat-label">Organizations</p>
+            </div>
+        </div>
+
+        <!-- Total Donations -->
+        <div class="stat-card">
+            <div class="stat-icon donations">
+                <i class="fas fa-donate"></i>
+            </div>
+            <div class="stat-info">
+                <h3>Total Donations</h3>
+                <p class="stat-number">{{ total_donations }}</p>
+                <p class="stat-label">Items Donated</p>
+            </div>
+        </div>
+
+        <!-- Total Campaigns -->
+        <div class="stat-card">
+            <div class="stat-icon campaigns">
+                <i class="fas fa-bullhorn"></i>
+            </div>
+            <div class="stat-info">
+                <h3>Total Campaigns</h3>
+                <p class="stat-number">{{ total_campaigns }}</p>
+                <p class="stat-label">Active Campaigns</p>
+            </div>
+        </div>
+
+        <!-- Total Claims -->
+        <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #17a2b8, #138496);">
+                <i class="fas fa-handshake"></i>
+            </div>
+            <div class="stat-info">
+                <h3>Total Claims</h3>
+                <p class="stat-number">{{ total_claims }}</p>
+                <p class="stat-label">Donation Claims</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Approval Queue Summary -->
+    <div class="approval-section">
+        <h2><i class="fas fa-tasks"></i> Approval Queue</h2>
+        <div class="approval-grid">
+            <div class="approval-item pending">
+                <i class="fas fa-user-clock"></i>
+                <div class="approval-info">
+                    <h4>NGO Approvals</h4>
+                    <p class="count">{{ pending_ngos_count }} Pending</p>
+                </div>
+                <a href="{% url 'ngo_approval_list' %}" class="approval-link">Review</a>
+            </div>
+
+            <div class="approval-item pending">
+                <i class="fas fa-clipboard-list"></i>
+                <div class="approval-info">
+                    <h4>Campaign Approvals</h4>
+                    <p class="count">{{ pending_campaigns_count }} Pending</p>
+                </div>
+                <a href="{% url 'campaign_approval_list' %}" class="approval-link">Review</a>
+            </div>
+
+            <div class="approval-item pending">
+                <i class="fas fa-hand-holding-usd"></i>
+                <div class="approval-info">
+                    <h4>Donation Requests</h4>
+                    <p class="count">{{ pending_requests_count }} Pending</p>
+                </div>
+                <a href="{% url 'donation_request_approval_list' %}" class="approval-link">Review</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+        <div class="action-buttons">
+            <a href="{% url 'create_admin' %}" class="action-btn">
+                <i class="fas fa-user-plus"></i>
+                <span>Create New Admin</span>
+            </a>
+            <a href="{% url 'create_category' %}" class="action-btn">
+                <i class="fas fa-tag"></i>
+                <span>Create Category</span>
+            </a>
+            <a href="{% url 'manage_users' %}" class="action-btn">
+                <i class="fas fa-user-edit"></i>
+                <span>Manage Users</span>
+            </a>
+            <a href="{% url 'admin_profile' %}" class="action-btn">
+                <i class="fas fa-cog"></i>
+                <span>Profile Settings</span>
+            </a>
+            <a href="{% url 'system_stats' %}" class="action-btn">
+                <i class="fas fa-chart-line"></i>
+                <span>View Statistics</span>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
