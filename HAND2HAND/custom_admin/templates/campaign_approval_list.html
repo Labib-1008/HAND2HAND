@@ -1,0 +1,66 @@
+{% extends "custom_admin/base_admin.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-clipboard-check"></i> Campaign Approval Queue</h2>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if pending_campaigns %}
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>NGO</th>
+                        <th>Category</th>
+                        <th>Goal Amount</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for campaign in pending_campaigns %}
+                    <tr>
+                        <td>{{ campaign.title }}</td>
+                        <td>
+    {% if campaign.ngo.ngoprofile and campaign.ngo.ngoprofile.ngo_name %}
+        {{ campaign.ngo.ngoprofile.ngo_name }}
+    {% else %}
+        {{ campaign.ngo.username }}
+    {% endif %}
+</td>
+
+
+                        <td>{{ campaign.category.name|default:"N/A" }}</td>
+                        <td>৳{{ campaign.goal_amount }}</td>
+                        <td>
+                            {% if campaign.status == "pending" %}
+                                <span class="badge badge-warning">Pending</span>
+                            {% elif campaign.status == "approved" %}
+                                <span class="badge badge-success">Approved</span>
+                            {% else %}
+                                <span class="badge badge-danger">Rejected</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ campaign.created_at|date:"M d, Y" }}</td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="{% url 'approve_campaign' campaign.id %}" class="btn btn-sm btn-success">Approve</a>
+                                <a href="{% url 'reject_campaign' campaign.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Reject</a>
+                                <a href="#" class="btn btn-sm btn-info">View</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted">No pending campaign approvals.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
