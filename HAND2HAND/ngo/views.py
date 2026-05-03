@@ -166,4 +166,262 @@ def explore_campaigns(request):
     return render(request, 'ngos/explore_campaigns.html', context)
 
 
-##
+def campaign_detail(request, campaign_id):
+    # Get campaign
+    campaign = get_object_or_404(
+        Campaign.objects.annotate(
+            donors_count=Count('donations'),
+            total_raised=Sum('donations__amount')
+        ),
+        id=campaign_id,
+        status='approved',
+        is_active=True
+    )
+
+
+    # Calculate fundraising progress
+    campaign.progress_percent = 0
+    if campaign.goal_amount and campaign.goal_amount > 0:
+        raised = campaign.collected_amount or 0  
+        campaign.progress_percent = round((raised / campaign.goal_amount) * 100, 2)
+
+
+    # Donations for this campaign
+    donations = NGODonation.objects.filter(campaign=campaign).order_by('-donated_at')
+
+    # Updates for this campaign (optional)
+    updates = CampaignUpdate.objects.filter(campaign=campaign).order_by('-created_at')
+
+    context = {
+        'campaign': campaign,
+        'donations': donations,
+        'updates': updates,
+    }
+
+    return render(request, 'ngos/campaign_detail.html', context)
+
+
+
+
+
+@login_required
+def donate_to_campaign(request, campaign_id):
+    campaign = get_object_or_404(Campaign, id=campaign_id, status="approved", is_active=True)
+
+    if request.user == campaign.ngo:
+        messages.error(request, "⚠️ You cannot donate to your own campaign.")
+        return redirect("campaign_detail", campaign_id=campaign.id)
+
+    form = NGODonationForm(request.POST or None)
+
+    if request.method == "POST" and form.is_valid():
+        amount = form.cleaned_data['amount']
+        is_anonymous = form.cleaned_data.get('is_anonymous', False)
+        payer_name = '' if is_anonymous else form.cleaned_data.get('payer_name', '')
+        account_input = '' if is_anonymous else form.cleaned_data.get('account_input', '')
+        message = form.cleaned_data.get('message', '')
+        tran_id = f"{campaign.id}_{request.user.id}_{uuid.uuid4().hex[:8]}"  # Unique ID
+        
+
+        # SSLCommerz request data
+        data = {
+            "store_id": settings.SSL_COMMERZ_STORE_ID,
+            "store_passwd": settings.SSL_COMMERZ_STORE_PASS,
+            "total_amount": float(amount),
+            "currency": "BDT",
+            "tran_id": tran_id,
+            "success_url": request.build_absolute_uri(reverse('ssl_success')),
+            "fail_url": request.build_absolute_uri(reverse('ssl_fail')),
+            "cancel_url": request.build_absolute_uri(reverse('ssl_cancel')),
+            "cus_name": request.user.username,
+            "cus_email": request.user.email or 'test@test.com',
+            "cus_add1": "Dhaka",
+            "cus_city": "Dhaka",
+            "cus_postcode": "1200",
+            "cus_country": "Bangladesh",
+            "cus_phone": "01700000000",
+            "product_name": campaign.title,
+            "product_category": "Donation",
+            "product_profile": "non-physical-goods",
+            "value_a": str(campaign.id),
+            "shipping_method": "NO",
+            "value_b": message,  # <-- message passed here
+            "value_c": str(is_anonymous),  # <-- pass anonymous flag
+        }
+
+        try:
+            url = "https://sandbox.sslcommerz.com/gwprocess/v4/api.php"
+            response = requests.post(url, data=data, timeout=10)
+            res_json = response.json()
+            gateway_url = res_json.get("GatewayPageURL")
+
+            if gateway_url:
+                return redirect(gateway_url)
+            else:
+                messages.error(request, "Payment initiation failed. Try again.")
+        except Exception as e:
+            messages.error(request, f"Payment error: {e}")
+
+    return render(request, "ngos/donate_to_campaign.html", {"campaign": campaign, "form": form})
+
+# ===== Callbacks =====
+
+@csrf_exempt
+def ssl_success(request):
+    data = request.POST or request.GET
+    tran_id = data.get("tran_id")
+    status = str(data.get("status", "")).strip().upper()
+    amount_str = data.get("amount", "0")
+    try:
+        amount = Decimal(amount_str)
+    except:
+        amount = Decimal(0)
+
+    # ✅ Only proceed if status is VALID or SUCCESS
+    if status not in ["VALID", "SUCCESS"]:
+        return redirect(reverse('donation_error_page') + "?" + urlencode({"msg": f"Payment failed (status={status})"}))
+
+    # Validate tran_id
+    try:
+        campaign_id, user_id, _ = tran_id.split("_")
+    except Exception:
+        return redirect(reverse('donation_error_page') + "?" + urlencode({"msg": "Invalid transaction ID format."}))
+
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+    User = get_user_model()
+    donor = get_object_or_404(User, id=user_id)
+
+    donation_message = data.get("value_b", "")
+    is_anonymous = data.get("value_c", "False") == "True"  # convert string to boolean
+
+    # Create donation (success only)
+    donation = NGODonation.objects.create(
+        campaign=campaign,
+        donor=donor,
+        amount=amount,
+        transaction_id=tran_id,
+        payment_method="SSLCommerz",
+        payment_status="completed",
+        message=donation_message,
+        is_anonymous=is_anonymous
+    )
+
+    # Reward points
+    user_reward, _ = UserReward.objects.get_or_create(user=donor)
+    user_reward.add_points(30)
+
+    # Notification to NGO
+    Notification.objects.create(
+        user=campaign.ngo,
+        message=f"{donor.username} donated ৳{amount} to your campaign '{campaign.title}'",
+        link=reverse('campaign_detail', args=[campaign.id])
+    )
+
+    return redirect('donation_success_page', donation_id=donation.id)
+
+
+@csrf_exempt
+def ssl_fail(request):
+    data = request.POST or request.GET
+    tran_id = data.get("tran_id")
+    amount = data.get("amount", 0)
+
+    # Mark pending donation as failed if exists
+    if tran_id:
+        NGODonation.objects.filter(transaction_id=tran_id, payment_status="pending") \
+                           .update(payment_status="failed")
+
+    msg = f"Payment failed for transaction {tran_id} (Amount: ৳{amount})"
+    return redirect(reverse('donation_error_page') + "?" + urlencode({"msg": msg}))
+
+
+@csrf_exempt
+def ssl_cancel(request):
+    data = request.POST or request.GET
+    tran_id = data.get("tran_id")
+    amount = data.get("amount", 0)
+
+    # Mark pending donation as failed if exists
+    if tran_id:
+        NGODonation.objects.filter(transaction_id=tran_id, payment_status="pending") \
+                           .update(payment_status="failed")
+
+    msg = f"Payment cancelled for transaction {tran_id} (Amount: ৳{amount})"
+    return redirect(reverse('donation_error_page') + "?" + urlencode({"msg": msg}))
+
+
+@login_required
+def donation_success_page(request, donation_id):
+    donation = get_object_or_404(NGODonation, id=donation_id, donor=request.user)
+    return render(request, "ngos/donation_success.html", {"donation": donation})
+
+@login_required
+def donation_error_page(request):
+    msg = request.GET.get("msg", "Payment failed. Please try again.")
+    return render(request, "ngos/payment_error.html", {"msg": msg})
+
+
+
+@login_required
+def download_receipt(request, donation_id):
+    donation = get_object_or_404(NGODonation, id=donation_id, donor=request.user)
+
+    template = get_template("ngos/receipt_pdf.html")
+    html = template.render({"donation": donation})
+
+    result = io.BytesIO()
+    pdf = pisa.pisaDocument(io.BytesIO(html.encode("UTF-8")), result)
+
+    if not pdf.err:
+        response = HttpResponse(result.getvalue(), content_type="application/pdf")
+        response['Content-Disposition'] = f'attachment; filename="receipt_{donation.id}.pdf"'
+        return response
+    return HttpResponse("Error generating PDF", status=500)
+
+
+
+
+@login_required
+def add_campaign_update(request, campaign_id):
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+
+    # Only NGO owner can add updates
+    if request.user != campaign.ngo:
+        messages.error(request, "You are not authorized to add updates to this campaign.")
+        return redirect('campaign_detail', campaign_id=campaign.id)
+
+    if request.method == "POST":
+        title = request.POST.get('title')
+        message = request.POST.get('message')
+
+        if title and message:
+            CampaignUpdate.objects.create(
+                campaign=campaign,
+                title=title,
+                message=message
+            )
+            messages.success(request, "Update added successfully!")
+            return redirect(f"{reverse('campaign_detail', args=[campaign_id])}?tab=updates")
+        else:
+            messages.error(request, "Both title and message are required.")
+
+    return redirect('campaign_detail', campaign_id=campaign.id)
+
+
+@login_required
+def ngo_donation_history(request):
+    # Only allow NGO users
+    if request.user.user_type != 'ngo':
+        return render(request, '403.html')  # or redirect with message
+
+    # Get all donations to campaigns of this NGO
+    donations = NGODonation.objects.filter(campaign__ngo=request.user).order_by('-donated_at')
+
+    context = {
+        'donations': donations,
+    }
+    return render(request, 'ngos/donation_history.html', context)
+
+
+
+
