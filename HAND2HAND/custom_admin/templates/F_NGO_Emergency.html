@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+padding:20px;
+text-align:center;
+}
+.appeal-box{
+background:white;
+width:90%;
+margin:auto;
+margin-top:30px;
+padding:30px;
+border-radius:20px;
+box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+.counter-box{
+background:#fee2e2;
+padding:20px;
+border-radius:15px;
+margin-top:20px;
+}
+.create-btn{
+background:#dc2626;
+color:white;
+padding:12px 20px;
+border:none;
+border-radius:10px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+<h1>Emergency Appeal Management</h1>
+</div>
+
+<div class="appeal-box">
+<h3>Create New Appeal</h3>
+<form>
+<div class="mb-3">
+<label>Appeal Title</label>
+<input type="text" class="form-control">
+</div>
+<div class="mb-3">
+<label>Description</label>
+<textarea class="form-control" rows="5"></textarea>
+</div>
+<div class="mb-3">
+<label>Target Amount</label>
+<input type="number" class="form-control">
+</div>
+<div class="mb-3">
+<label>Upload Banner</label>
+<input type="file" class="form-control">
+</div>
+<button class="create-btn">Publish Appeal</button>
+</form>
+
+<div class="counter-box">
+<h4>Flood Relief Appeal</h4>
+<p>Collected: ৳ 50,000</p>
+<p>Target: ৳ 1,00,000</p>
+<div class="progress">
+<div class="progress-bar" style="width:50%">50%</div>
+</div>
+</div>
+</div>
+
+</body>
+</html>
