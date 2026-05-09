@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+            padding:30px;
+        }
+
+        .role-card{
+            background:white;
+            border-radius:15px;
+            padding:25px;
+            margin-bottom:20px;
+            box-shadow:0px 3px 12px rgba(0,0,0,0.08);
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+
+    <h3>HAND2HAND</h3>
+
+    <a href="#">Admin Panel</a>
+    <a href="#">Donor Dashboard</a>
+    <a href="#">Recipient Dashboard</a>
+    <a href="#">NGO Dashboard</a>
+    <a href="#">Campaigns</a>
+    <a href="#">Emergency Appeals</a>
+    <a href="#">Reports</a>
+    <a href="#">Logout</a>
+
+</div>
+
+<div class="content">
+
+    <h1>Role Based Access Control</h1>
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="role-card">
+                <h4>Admin</h4>
+                <p>Can verify NGOs, approve donations, manage users and platform settings.</p>
+                <button class="btn btn-primary">Manage Access</button>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="role-card">
+                <h4>Donor</h4>
+                <p>Can create donation posts, track donations and earn rewards.</p>
+                <button class="btn btn-success">Manage Access</button>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="role-card">
+                <h4>Recipient</h4>
+                <p>Can request donations and view request history.</p>
+                <button class="btn btn-warning">Manage Access</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
