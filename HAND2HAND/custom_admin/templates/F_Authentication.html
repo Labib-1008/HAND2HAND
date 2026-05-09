@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+            <div class="mb-3">
+                <label>Password</label>
+                <input type="password" class="form-control" placeholder="Enter password">
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input">
+                <label class="form-check-label">Remember Me</label>
+            </div>
+
+            <button class="btn-login">Login Securely</button>
+
+            <div class="extra-links">
+                <a href="#">Forgot Password?</a>
+                <a href="#">Register</a>
+            </div>
+
+            <div class="security-box">
+                <h6>Security Features</h6>
+                <ul>
+                    <li>Encrypted Password</li>
+                    <li>2FA OTP Verification</li>
+                    <li>Session Timeout Protection</li>
+                    <li>CSRF Token Validation</li>
+                </ul>
+            </div>
+
+            <div class="otp-section mt-4">
+                <label>Enter OTP</label>
+                <input type="text" class="form-control" placeholder="6 Digit OTP">
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+
+    const loginButton = document.querySelector('.btn-login');
+
+    loginButton.addEventListener('click', function(e){
+        e.preventDefault();
+
+        alert('OTP Sent Successfully');
+
+        document.querySelector('.otp-section').style.display = 'block';
+    });
+
+</script>
+
+</body>
+</html>
