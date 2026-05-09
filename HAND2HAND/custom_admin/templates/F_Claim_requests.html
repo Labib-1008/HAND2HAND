@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<a href="#">Messages</a>
+<a href="#">Logout</a>
+</div>
+
+<div class="content">
+<h2>Donation Claim Requests</h2>
+
+<div class="claim-card">
+<h4>Food Package Donation</h4>
+<p>Available Quantity: 10</p>
+<p>Location: Dhaka</p>
+<span class="badge-status">Available</span>
+<hr>
+<textarea class="form-control mb-3" rows="4" placeholder="Write why you need this donation"></textarea>
+<button class="request-btn">Submit Claim Request</button>
+</div>
+
+<div class="claim-card">
+<h4>Winter Clothes</h4>
+<p>Available Quantity: 15</p>
+<p>Location: Khulna</p>
+<span class="badge-status">Available</span>
+<hr>
+<textarea class="form-control mb-3" rows="4" placeholder="Explain your request"></textarea>
+<button class="request-btn">Submit Claim Request</button>
+</div>
+
+<div class="history-box">
+<h4>Recent Claim History</h4>
+<table class="table table-bordered">
+<thead>
+<tr>
+<th>Donation</th>
+<th>Date</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rice Package</td>
+<td>12 May 2026</td>
+<td><span class="badge bg-warning">Pending</span></td>
+</tr>
+<tr>
+<td>Medicine Box</td>
+<td>10 May 2026</td>
+<td><span class="badge bg-success">Approved</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<script>
+const buttons=document.querySelectorAll('.request-btn');
+buttons.forEach(btn=>{
+btn.addEventListener('click',()=>{
+alert('Claim Request Submitted Successfully');
+});
+});
+</script>
+</body>
+</html>
