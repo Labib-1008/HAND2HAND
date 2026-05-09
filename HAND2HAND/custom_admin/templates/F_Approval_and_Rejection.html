@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<div class="workflow-card">
+<h4>Books Donation</h4>
+<p>Donor: Hasan Ali</p>
+<p>Category: Education</p>
+<p>Quantity: 50 Books</p>
+<textarea class="form-control mb-3" rows="3" placeholder="Admin notes"></textarea>
+<button class="approve-btn">Approve</button>
+<button class="reject-btn">Reject</button>
+<div class="status-box">Current Status: Pending</div>
+</div>
+
+<table class="table table-striped mt-4">
+<thead>
+<tr>
+<th>Donation</th>
+<th>Donor</th>
+<th>Status</th>
+<th>Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Blankets</td>
+<td>Kabir</td>
+<td><span class="badge bg-success">Approved</span></td>
+<td>11 May 2026</td>
+</tr>
+<tr>
+<td>Medicine</td>
+<td>Sakib</td>
+<td><span class="badge bg-danger">Rejected</span></td>
+<td>09 May 2026</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<script>
+const approve=document.querySelectorAll('.approve-btn');
+approve.forEach(btn=>{
+btn.addEventListener('click',()=>{
+alert('Donation Approved');
+});
+});
+
+const reject=document.querySelectorAll('.reject-btn');
+reject.forEach(btn=>{
+btn.addEventListener('click',()=>{
+alert('Donation Rejected');
+});
+});
+</script>
+
+</body>
+</html>
