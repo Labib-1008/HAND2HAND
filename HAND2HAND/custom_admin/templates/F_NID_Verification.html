@@ -1,72 +1,396 @@
 <!DOCTYPE html>
+<html lang="en">
 
-        .verify-box{
-            width:700px;
-            margin:auto;
-            margin-top:50px;
-            background:white;
-            padding:40px;
-            border-radius:20px;
-            box-shadow:0px 4px 15px rgba(0,0,0,0.1);
-        }
+<head>
 
-        .upload-box{
-            border:2px dashed #0d6efd;
-            padding:30px;
-            text-align:center;
-            border-radius:15px;
-            background:#eef5ff;
-        }
+<meta charset="UTF-8">
 
-    </style>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>HAND2HAND NID Verification</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+body{
+    background:#eef2f7;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.main-container{
+    width:95%;
+    margin:auto;
+    margin-top:30px;
+}
+
+.top-header{
+    background:#0f172a;
+    color:white;
+    padding:30px;
+    border-radius:20px;
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.verify-box{
+    width:750px;
+    margin:auto;
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0px 4px 15px rgba(0,0,0,0.1);
+}
+
+.verify-title{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.verify-title h2{
+    font-weight:bold;
+}
+
+.verify-title p{
+    color:gray;
+}
+
+.upload-box{
+    border:2px dashed #0d6efd;
+    padding:30px;
+    text-align:center;
+    border-radius:15px;
+    background:#eef5ff;
+    transition:0.3s;
+}
+
+.upload-box:hover{
+    background:#dbeafe;
+}
+
+.upload-box i{
+    font-size:40px;
+    color:#2563eb;
+    margin-bottom:15px;
+}
+
+.verify-btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:14px;
+    border-radius:12px;
+    width:100%;
+    font-size:18px;
+    transition:0.3s;
+}
+
+.verify-btn:hover{
+    background:#1d4ed8;
+}
+
+.status-box{
+    margin-top:30px;
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0px 4px 10px rgba(0,0,0,0.08);
+}
+
+.status-badge{
+    background:#22c55e;
+    color:white;
+    padding:8px 18px;
+    border-radius:20px;
+}
+
+.info-card{
+    background:white;
+    margin-top:25px;
+    padding:25px;
+    border-radius:18px;
+    text-align:center;
+    box-shadow:0px 4px 10px rgba(0,0,0,0.08);
+}
+
+.info-card i{
+    font-size:35px;
+    margin-bottom:15px;
+}
+
+.footer{
+    margin-top:40px;
+    text-align:center;
+    color:gray;
+    padding:20px;
+}
+
+@media(max-width:768px){
+
+.verify-box{
+    width:100%;
+    padding:25px;
+}
+
+}
+
+</style>
+
 </head>
+
 <body>
 
-<div class="verify-box">
+<div class="main-container">
 
-    <h2 class="text-center mb-4">NID Verification</h2>
+<div class="top-header">
 
-    <form>
+<h1>HAND2HAND Identity Verification</h1>
 
-        <div class="row">
+<p>
 
-            <div class="col-md-6 mb-3">
-                <label>Full Name</label>
-                <input type="text" class="form-control">
-            </div>
+Secure NID verification system for donors and recipients
 
-            <div class="col-md-6 mb-3">
-                <label>NID Number</label>
-                <input type="text" class="form-control">
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label>Date of Birth</label>
-                <input type="date" class="form-control">
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label>Phone Number</label>
-                <input type="text" class="form-control">
-            </div>
-
-        </div>
-
-        <div class="upload-box mb-4">
-            <h5>Upload NID Front Side</h5>
-            <input type="file" class="form-control mt-3">
-        </div>
-
-        <div class="upload-box mb-4">
-            <h5>Upload NID Back Side</h5>
-            <input type="file" class="form-control mt-3">
-        </div>
-
-        <button class="btn btn-primary w-100">Verify Identity</button>
-
-    </form>
+</p>
 
 </div>
 
+<div class="verify-box">
+
+<div class="verify-title">
+
+<h2>NID Verification</h2>
+
+<p>
+
+Complete identity verification to access donation services
+
+</p>
+
+</div>
+
+<form>
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+
+<label>Full Name</label>
+
+<input type="text"
+class="form-control"
+placeholder="Enter Full Name">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>NID Number</label>
+
+<input type="text"
+class="form-control"
+placeholder="Enter NID Number">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Date of Birth</label>
+
+<input type="date"
+class="form-control">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Phone Number</label>
+
+<input type="text"
+class="form-control"
+placeholder="01XXXXXXXXX">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Email Address</label>
+
+<input type="email"
+class="form-control"
+placeholder="Enter Email">
+
+</div>
+
+<div class="col-md-6 mb-3">
+
+<label>Current Address</label>
+
+<input type="text"
+class="form-control"
+placeholder="Enter Address">
+
+</div>
+
+</div>
+
+<div class="upload-box mb-4">
+
+<i class="fa fa-id-card"></i>
+
+<h5>Upload NID Front Side</h5>
+
+<p>
+
+Upload clear front-side image of your National ID
+
+</p>
+
+<input type="file"
+class="form-control mt-3">
+
+</div>
+
+<div class="upload-box mb-4">
+
+<i class="fa fa-address-card"></i>
+
+<h5>Upload NID Back Side</h5>
+
+<p>
+
+Upload clear back-side image of your National ID
+
+</p>
+
+<input type="file"
+class="form-control mt-3">
+
+</div>
+
+<div class="upload-box mb-4">
+
+<i class="fa fa-camera"></i>
+
+<h5>Upload Selfie Photo</h5>
+
+<p>
+
+Upload live selfie for face verification
+
+</p>
+
+<input type="file"
+class="form-control mt-3">
+
+</div>
+
+<button type="button"
+class="verify-btn">
+
+Verify Identity
+
+</button>
+
+</form>
+
+</div>
+
+<div class="row mt-4">
+
+<div class="col-md-4">
+
+<div class="info-card">
+
+<i class="fa fa-user-check text-success"></i>
+
+<h3>12,500+</h3>
+
+<p>Verified Users</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="info-card">
+
+<i class="fa fa-shield-halved text-primary"></i>
+
+<h3>100%</h3>
+
+<p>Secure Verification</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="info-card">
+
+<i class="fa fa-clock text-warning"></i>
+
+<h3>2 Minutes</h3>
+
+<p>Average Approval Time</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="status-box">
+
+<h4>Verification Status</h4>
+
+<p>
+
+Current Status:
+
+<span class="status-badge">
+
+Pending Verification
+
+</span>
+
+</p>
+
+<p>
+
+Your submitted information will be reviewed by the admin team.
+
+</p>
+
+</div>
+
+<div class="footer">
+
+© 2026 HAND2HAND Donation Platform
+
+</div>
+
+</div>
+
+<script>
+
+const verifyButton =
+document.querySelector('.verify-btn');
+
+verifyButton.addEventListener('click',()=>{
+
+alert('Verification Request Submitted Successfully');
+
+});
+
+</script>
+
 </body>
+
 </html>
