@@ -1,72 +1,438 @@
 <!DOCTYPE html>
-            background:white;
-            padding:30px;
-            margin:30px;
-            border-radius:20px;
-        }
+<html lang="en">
 
-        .donation-card{
-            background:white;
-            padding:20px;
-            border-radius:15px;
-            margin-top:20px;
-        }
+<head>
 
-    </style>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Donation Search System</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+body{
+    background:#eef2f7;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.container-box{
+    width:95%;
+    margin:auto;
+    margin-top:30px;
+}
+
+.top-header{
+    background:#0f172a;
+    color:white;
+    padding:25px;
+    border-radius:20px;
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.search-box{
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0px 4px 10px rgba(0,0,0,0.08);
+}
+
+.search-box h2{
+    margin-bottom:25px;
+}
+
+.donation-card{
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    margin-top:25px;
+    box-shadow:0px 4px 10px rgba(0,0,0,0.08);
+    transition:0.3s;
+}
+
+.donation-card:hover{
+    transform:translateY(-5px);
+}
+
+.badge-box{
+    background:#22c55e;
+    color:white;
+    padding:7px 15px;
+    border-radius:20px;
+    display:inline-block;
+    margin-bottom:10px;
+}
+
+.claim-btn{
+    background:#16a34a;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:10px;
+}
+
+.claim-btn:hover{
+    background:#15803d;
+}
+
+.details-btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:10px;
+}
+
+.details-btn:hover{
+    background:#1d4ed8;
+}
+
+.footer{
+    margin-top:40px;
+    text-align:center;
+    color:gray;
+    padding:20px;
+}
+
+.stats-section{
+    margin-top:30px;
+}
+
+.stats-card{
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    text-align:center;
+    box-shadow:0px 4px 10px rgba(0,0,0,0.08);
+}
+
+.stats-card i{
+    font-size:35px;
+    margin-bottom:15px;
+}
+
+@media(max-width:768px){
+
+.search-box{
+    padding:20px;
+}
+
+.donation-card{
+    text-align:center;
+}
+
+}
+
+</style>
+
 </head>
+
 <body>
 
-<div class="container">
+<div class="container-box">
 
-    <div class="search-box">
+<div class="top-header">
 
-        <h2>Search Donations</h2>
+<h1>HAND2HAND Donation Search</h1>
 
-        <div class="row">
+<p>
 
-            <div class="col-md-4">
-                <input type="text" class="form-control" placeholder="Search keyword">
-            </div>
+Find available donations quickly and easily
 
-            <div class="col-md-3">
-                <select class="form-select">
-                    <option>All Categories</option>
-                    <option>Food</option>
-                    <option>Clothes</option>
-                    <option>Books</option>
-                </select>
-            </div>
-
-            <div class="col-md-3">
-                <select class="form-select">
-                    <option>Location</option>
-                    <option>Dhaka</option>
-                    <option>Khulna</option>
-                    <option>Rajshahi</option>
-                </select>
-            </div>
-
-            <div class="col-md-2">
-                <button class="btn btn-primary w-100">Search</button>
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="donation-card">
-        <h4>Winter Clothes Donation</h4>
-        <p>10 Jackets Available</p>
-        <button class="btn btn-success">Claim</button>
-    </div>
-
-    <div class="donation-card">
-        <h4>Rice and Dry Food</h4>
-        <p>Emergency Flood Relief Support</p>
-        <button class="btn btn-success">Claim</button>
-    </div>
+</p>
 
 </div>
 
+<div class="search-box">
+
+<h2>Search Donations</h2>
+
+<div class="row">
+
+<div class="col-md-4 mb-3">
+
+<input type="text"
+class="form-control"
+placeholder="Search keyword">
+
+</div>
+
+<div class="col-md-3 mb-3">
+
+<select class="form-select">
+
+<option>All Categories</option>
+
+<option>Food</option>
+
+<option>Clothes</option>
+
+<option>Books</option>
+
+<option>Medical</option>
+
+<option>Emergency</option>
+
+</select>
+
+</div>
+
+<div class="col-md-3 mb-3">
+
+<select class="form-select">
+
+<option>Select Location</option>
+
+<option>Dhaka</option>
+
+<option>Khulna</option>
+
+<option>Rajshahi</option>
+
+<option>Barisal</option>
+
+<option>Chittagong</option>
+
+</select>
+
+</div>
+
+<div class="col-md-2 mb-3">
+
+<button class="btn btn-primary w-100">
+
+Search
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="stats-section">
+
+<div class="row">
+
+<div class="col-md-4">
+
+<div class="stats-card">
+
+<i class="fa fa-box text-primary"></i>
+
+<h3>150+</h3>
+
+<p>Total Donations</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="stats-card">
+
+<i class="fa fa-users text-success"></i>
+
+<h3>320+</h3>
+
+<p>Active Recipients</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="stats-card">
+
+<i class="fa fa-hand-holding-heart text-danger"></i>
+
+<h3>80+</h3>
+
+<p>NGO Partners</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="donation-card">
+
+<div class="badge-box">
+
+Available
+
+</div>
+
+<h4>Winter Clothes Donation</h4>
+
+<p>
+
+10 Jackets Available for poor families.
+
+</p>
+
+<p>
+
+Location: Dhaka
+
+</p>
+
+<p>
+
+Posted by: Red Crescent NGO
+
+</p>
+
+<button class="claim-btn">
+
+Claim
+
+</button>
+
+<button class="details-btn">
+
+Details
+
+</button>
+
+</div>
+
+<div class="donation-card">
+
+<div class="badge-box">
+
+Emergency
+
+</div>
+
+<h4>Rice and Dry Food</h4>
+
+<p>
+
+Emergency Flood Relief Support Package.
+
+</p>
+
+<p>
+
+Location: Khulna
+
+</p>
+
+<p>
+
+Posted by: Humanity Foundation
+
+</p>
+
+<button class="claim-btn">
+
+Claim
+
+</button>
+
+<button class="details-btn">
+
+Details
+
+</button>
+
+</div>
+
+<div class="donation-card">
+
+<div class="badge-box">
+
+Available
+
+</div>
+
+<h4>Education Books Donation</h4>
+
+<p>
+
+School books for SSC students.
+
+</p>
+
+<p>
+
+Location: Rajshahi
+
+</p>
+
+<p>
+
+Posted by: Education Care NGO
+
+</p>
+
+<button class="claim-btn">
+
+Claim
+
+</button>
+
+<button class="details-btn">
+
+Details
+
+</button>
+
+</div>
+
+<div class="footer">
+
+© 2026 HAND2HAND Donation Platform
+
+</div>
+
+</div>
+
+<script>
+
+const claimButtons =
+document.querySelectorAll('.claim-btn');
+
+claimButtons.forEach(btn=>{
+
+btn.addEventListener('click',()=>{
+
+alert('Donation Claim Request Sent');
+
+});
+
+});
+
+const detailsButtons =
+document.querySelectorAll('.details-btn');
+
+detailsButtons.forEach(btn=>{
+
+btn.addEventListener('click',()=>{
+
+alert('Opening Donation Details');
+
+});
+
+});
+
+</script>
+
 </body>
+
 </html>
